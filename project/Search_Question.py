@@ -2,12 +2,13 @@
 
 class Search_Question:
     def __init__(self):
+        self.mode = 'search'
         self.text = ''
         self.token = []
         self.pos = []
         self.keyword = []
-        self.vector = []
         self.tag = []
+        self.neg_tag = []
 
     def save(self):
         tagged_question = [self.text]
@@ -39,6 +40,15 @@ class Search_Question:
 
         self.tag.sort()
 
+    def add_neg_tag(self,tag_list):
+        if isinstance(tag_list, list):
+            for tag in tag_list:
+                self.neg_tag.append(tag)
+        elif isinstance(tag_list, str):
+            self.neg_tag.append(tag_list)
+
+        self.neg_tag.sort()
+
     def add_key(self, key_list):
         if isinstance(key_list, list):
             for key in key_list:
@@ -47,18 +57,3 @@ class Search_Question:
             self.keyword.append(key_list)
 
         self.keyword.sort()
-
-    def get_token(self):
-        return self.token
-
-    def get_pos(self):
-        return self.pos
-
-    def get_key(self):
-        return self.keyword
-
-    def get_vec(self):
-        return self.vector
-
-    def get_tag(self):
-        return self.tag

@@ -24,12 +24,12 @@ def hierarchy_tag(question):
     pass
 
 
-def auto_tag(question, mode, tok_eng='newmm', tag_eng='perceptron', corpus='orchid', pos_choose=['NCMN']):
-    if mode == 's':
+def auto_tag(question, tok_eng='newmm', tag_eng='perceptron', corpus='orchid', pos_choose=['NCMN']):
+    if question.mode == 's' or 'search':
         tokenize(question, engine=tok_eng)
         pos_tag(question, engine=tag_eng, corpus=corpus)
         word_choose(question, pos_choose=pos_choose)
-    elif mode == 'a':
+    elif question.mode == 'a' or 'ask':
         tokenize(question, engine=tok_eng)
         pos_tag(question, engine=tag_eng, corpus=corpus)
         word_choose(question, pos_choose=pos_choose)

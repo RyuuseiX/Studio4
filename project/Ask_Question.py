@@ -2,6 +2,7 @@
 
 class Ask_Question:
     def __init__(self):
+        self.mode = 'ask'
         self.text = ''
         self.token = []
         self.pos = []
@@ -48,17 +49,10 @@ class Ask_Question:
 
         self.keyword.sort()
 
-    def get_token(self):
-        return self.token
+    def add_vector(self, vec_list):
+        if isinstance(vec_list, list):
+            for key in vec_list:
+                self.vector.append(key)
+        elif isinstance(vec_list, str):
+            self.vector.append(vec_list)
 
-    def get_pos(self):
-        return self.pos
-
-    def get_key(self):
-        return self.keyword
-
-    def get_vec(self):
-        return self.vector
-
-    def get_tag(self):
-        return self.tag
