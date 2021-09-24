@@ -20,7 +20,7 @@ class Search_Question:
         # return self.question, sorted(self.tag)
 
     def add_text(self, text):
-        self.text += text
+        self.text = text
 
     def add_tag(self, tag_list):
         if isinstance(tag_list, list):
@@ -46,6 +46,15 @@ class Search_Question:
                 self.neg_tag.append(tag)
         elif isinstance(tag_list, str):
             self.neg_tag.append(tag_list)
+
+        self.neg_tag.sort()
+
+    def del_neg_tag(self, tag_list):
+        if isinstance(tag_list, list):
+            for tag in tag_list:
+                self.neg_tag.remove(tag)
+        elif isinstance(tag_list, str):
+            self.neg_tag.remove(tag_list)
 
         self.neg_tag.sort()
 

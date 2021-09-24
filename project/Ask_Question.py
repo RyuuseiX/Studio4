@@ -20,7 +20,7 @@ class Ask_Question:
         # return self.question, sorted(self.tag)
 
     def add_text(self, text):
-        self.text += text
+        self.text = text
 
     def add_tag(self, tag_list):
         if isinstance(tag_list, list):
