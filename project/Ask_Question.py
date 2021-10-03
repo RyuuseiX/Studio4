@@ -8,12 +8,14 @@ class Ask_Question:
         self.pos = []
         self.keyword = []
         self.vector = []
-        self.tag = []
+        self.auto_tag = []
+        self.manual_tag = []
 
     def save(self):
         tagged_question = [self.text]
-        self.tag.sort()
-        for tag in self.tag:
+        all_tag = self.manual_tag.extend(self.auto_tag)
+        all_tag.sort()
+        for tag in all_tag:
             tagged_question.append(tag)
 
         return tagged_question
@@ -22,23 +24,41 @@ class Ask_Question:
     def add_text(self, text):
         self.text = text
 
-    def add_tag(self, tag_list):
+    def add_auto_tag(self, tag_list):
         if isinstance(tag_list, list):
             for tag in tag_list:
-                self.tag.append(tag)
+                self.auto_tag.append(tag)
         elif isinstance(tag_list, str):
-            self.tag.append(tag_list)
+            self.auto_tag.append(tag_list)
 
-        self.tag.sort()
+        self.auto_tag.sort()
 
-    def del_tag(self, tag_list):
+    def del_auto_tag(self, tag_list):
         if isinstance(tag_list, list):
             for tag in tag_list:
-                self.tag.remove(tag)
+                self.auto_tag.remove(tag)
         elif isinstance(tag_list, str):
-            self.tag.remove(tag_list)
+            self.auto_tag.remove(tag_list)
 
-        self.tag.sort()
+        self.auto_tag.sort()
+
+    def add_manual_tag(self, tag_list):
+        if isinstance(tag_list, list):
+            for tag in tag_list:
+                self.manual_tag.append(tag)
+        elif isinstance(tag_list, str):
+            self.manual_tag.append(tag_list)
+
+        self.manual_tag.sort()
+
+    def del_manual_tag(self, tag_list):
+        if isinstance(tag_list, list):
+            for tag in tag_list:
+                self.manual_tag.remove(tag)
+        elif isinstance(tag_list, str):
+            self.manual_tag.remove(tag_list)
+
+        self.manual_tag.sort()
 
     def add_key(self, key_list):
         if isinstance(key_list, list):
