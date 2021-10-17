@@ -2,24 +2,21 @@
 
 class Ask_Question:
     def __init__(self):
-        self.mode = 'ask'
+        self.mode = 'A'
         self.text = ''
         self.token = []
         self.pos = []
         self.keyword = []
-        self.vector = []
         self.auto_tag = []
         self.manual_tag = []
+        self.tagged_question = {}
 
     def save(self):
-        tagged_question = [self.text]
-        all_tag = self.manual_tag.extend(self.auto_tag)
-        all_tag.sort()
-        for tag in all_tag:
-            tagged_question.append(tag)
+        self.tagged_question = {'Question': self.text, 'Tag': []}
+        self.tagged_question['Tag'].extend(self.auto_tag)
+        self.tagged_question['Tag'].extend(self.manual_tag)
 
-        return tagged_question
-        # return self.question, sorted(self.tag)
+        return self.tagged_question
 
     def add_text(self, text):
         self.text = text
@@ -31,7 +28,9 @@ class Ask_Question:
         elif isinstance(tag_list, str):
             self.auto_tag.append(tag_list)
 
-        self.auto_tag.sort()
+        self.auto_tag = set(self.auto_tag)
+        self.auto_tag = list(self.auto_tag)
+        # self.auto_tag.sort()
 
     def del_auto_tag(self, tag_list):
         if isinstance(tag_list, list):
@@ -40,7 +39,7 @@ class Ask_Question:
         elif isinstance(tag_list, str):
             self.auto_tag.remove(tag_list)
 
-        self.auto_tag.sort()
+        # self.auto_tag.sort()
 
     def add_manual_tag(self, tag_list):
         if isinstance(tag_list, list):
@@ -48,8 +47,9 @@ class Ask_Question:
                 self.manual_tag.append(tag)
         elif isinstance(tag_list, str):
             self.manual_tag.append(tag_list)
-
-        self.manual_tag.sort()
+        self.manual_tag = set(self.manual_tag)
+        self.manual_tag = list(self.manual_tag)
+        # self.manual_tag.sort()
 
     def del_manual_tag(self, tag_list):
         if isinstance(tag_list, list):
@@ -58,7 +58,7 @@ class Ask_Question:
         elif isinstance(tag_list, str):
             self.manual_tag.remove(tag_list)
 
-        self.manual_tag.sort()
+        # self.manual_tag.sort()
 
     def add_key(self, key_list):
         if isinstance(key_list, list):
@@ -67,7 +67,7 @@ class Ask_Question:
         elif isinstance(key_list, str):
             self.keyword.append(key_list)
 
-        self.keyword.sort()
+        # self.keyword.sort()
 
     def add_vector(self, vec_list):
         if isinstance(vec_list, list):
