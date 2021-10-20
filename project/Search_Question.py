@@ -5,51 +5,81 @@ class Search_Question:
         self.mode = 'S'
         self.text = ''
         self.token = []
-        self.pos = []
-        self.keyword = []
-        self.tag = []
+        self.auto_tag = []
+        self.spec_tag = []
+        self.pos_tag = []
         self.neg_tag = []
+        self.tagged_question = {}
 
     def save(self):
-        tagged_question = {'Question': self.text, 'Tag': self.tag, 'Neg_Tag': self.neg_tag}
+        self.tagged_question = {'Question': self.text, 'Tag': self.auto_tag, 'Neg_Tag': self.neg_tag}
 
-        return tagged_question
+        return self.tagged_question
 
     def add_text(self, text):
         self.text = text
 
-    def add_tag(self, tag_list):
+    def add_auto_tag(self, tag_list):
+        if self.auto_tag is None:
+            self.auto_tag = []
+            self.auto_tag.extend(self.spec_tag)
         if isinstance(tag_list, list):
             for tag in tag_list:
-                self.tag.append(tag)
+                self.auto_tag.append(tag)
         elif isinstance(tag_list, str):
-            self.tag.append(tag_list)
+            self.auto_tag.append(tag_list)
 
-        self.tag = set(self.tag)
-        self.tag = list(self.tag)
-        # self.tag.sort()
+        self.auto_tag = remove_duplicate(self.auto_tag)
 
-    def del_tag(self, tag_list):
+    def del_auto_tag(self, tag_list):
         if isinstance(tag_list, list):
             for tag in tag_list:
-                self.tag.remove(tag)
+                self.auto_tag.remove(tag)
         elif isinstance(tag_list, str):
-            self.tag.remove(tag_list)
+            self.auto_tag.remove(tag_list)
 
-        self.tag = set(self.tag)
-        self.tag = list(self.tag)
-        # self.tag.sort()
 
-    def add_neg_tag(self,tag_list):
+    def add_spec_tag(self, tag_list):
+        if isinstance(tag_list, list):
+            for tag in tag_list:
+                self.spec_tag.append(tag)
+        elif isinstance(tag_list, str):
+            self.spec_tag.append(tag_list)
+
+        self.spec_tag = remove_duplicate(self.spec_tag)
+
+    def del_spec_tag(self, tag_list):
+        if isinstance(tag_list, list):
+            for tag in tag_list:
+                self.spec_tag.remove(tag)
+        elif isinstance(tag_list, str):
+            self.spec_tag.remove(tag_list)
+
+
+    def add_pos_tag(self, tag_list):
+        if isinstance(tag_list, list):
+            for tag in tag_list:
+                self.pos_tag.append(tag)
+        elif isinstance(tag_list, str):
+            self.pos_tag.append(tag_list)
+
+        self.pos_tag = remove_duplicate(self.pos_tag)
+
+    def del_pos_tag(self, tag_list):
+        if isinstance(tag_list, list):
+            for tag in tag_list:
+                self.pos_tag.remove(tag)
+        elif isinstance(tag_list, str):
+            self.pos_tag.remove(tag_list)
+
+    def add_neg_tag(self, tag_list):
         if isinstance(tag_list, list):
             for tag in tag_list:
                 self.neg_tag.append(tag)
         elif isinstance(tag_list, str):
             self.neg_tag.append(tag_list)
 
-        self.neg_tag = set(self.neg_tag)
-        self.neg_tag = list(self.neg_tag)
-        # self.neg_tag.sort()
+        self.neg_tag = remove_duplicate(self.neg_tag)
 
     def del_neg_tag(self, tag_list):
         if isinstance(tag_list, list):
@@ -58,15 +88,13 @@ class Search_Question:
         elif isinstance(tag_list, str):
             self.neg_tag.remove(tag_list)
 
-        self.neg_tag = set(self.neg_tag)
-        self.neg_tag = list(self.neg_tag)
-        # self.neg_tag.sort()
 
-    def add_key(self, key_list):
-        if isinstance(key_list, list):
-            for key in key_list:
-                self.keyword.append(key)
-        elif isinstance(key_list, str):
-            self.keyword.append(key_list)
-
-        # self.keyword.sort()
+def remove_duplicate(lis):
+    if lis is None:
+        return []
+    elif lis is not None:
+        ans_list = []
+        for word in lis:
+            if word not in ans_list:
+                ans_list.append(word)
+        return ans_list

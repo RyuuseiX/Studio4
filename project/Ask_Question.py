@@ -5,8 +5,7 @@ class Ask_Question:
         self.mode = 'A'
         self.text = ''
         self.token = []
-        self.pos = []
-        self.keyword = []
+        self.spec_tag = []
         self.auto_tag = []
         self.manual_tag = []
         self.tagged_question = {}
@@ -22,15 +21,16 @@ class Ask_Question:
         self.text = text
 
     def add_auto_tag(self, tag_list):
+        if self.auto_tag is None:
+            self.auto_tag = []
+            self.auto_tag.extend(self.spec_tag)
         if isinstance(tag_list, list):
             for tag in tag_list:
                 self.auto_tag.append(tag)
         elif isinstance(tag_list, str):
             self.auto_tag.append(tag_list)
 
-        self.auto_tag = set(self.auto_tag)
-        self.auto_tag = list(self.auto_tag)
-        # self.auto_tag.sort()
+        self.auto_tag = remove_duplicate(self.auto_tag)
 
     def del_auto_tag(self, tag_list):
         if isinstance(tag_list, list):
@@ -39,7 +39,21 @@ class Ask_Question:
         elif isinstance(tag_list, str):
             self.auto_tag.remove(tag_list)
 
-        # self.auto_tag.sort()
+    def add_spec_tag(self, tag_list):
+        if isinstance(tag_list, list):
+            for tag in tag_list:
+                self.spec_tag.append(tag)
+        elif isinstance(tag_list, str):
+            self.spec_tag.append(tag_list)
+
+        self.spec_tag = remove_duplicate(self.spec_tag)
+
+    def del_spec_tag(self, tag_list):
+        if isinstance(tag_list, list):
+            for tag in tag_list:
+                self.spec_tag.remove(tag)
+        elif isinstance(tag_list, str):
+            self.spec_tag.remove(tag_list)
 
     def add_manual_tag(self, tag_list):
         if isinstance(tag_list, list):
@@ -47,9 +61,8 @@ class Ask_Question:
                 self.manual_tag.append(tag)
         elif isinstance(tag_list, str):
             self.manual_tag.append(tag_list)
-        self.manual_tag = set(self.manual_tag)
-        self.manual_tag = list(self.manual_tag)
-        # self.manual_tag.sort()
+
+        self.manual_tag = remove_duplicate(self.manual_tag)
 
     def del_manual_tag(self, tag_list):
         if isinstance(tag_list, list):
@@ -58,21 +71,14 @@ class Ask_Question:
         elif isinstance(tag_list, str):
             self.manual_tag.remove(tag_list)
 
-        # self.manual_tag.sort()
 
-    def add_key(self, key_list):
-        if isinstance(key_list, list):
-            for key in key_list:
-                self.keyword.append(key)
-        elif isinstance(key_list, str):
-            self.keyword.append(key_list)
-
-        # self.keyword.sort()
-
-    def add_vector(self, vec_list):
-        if isinstance(vec_list, list):
-            for key in vec_list:
-                self.vector.append(key)
-        elif isinstance(vec_list, str):
-            self.vector.append(vec_list)
+def remove_duplicate(lis):
+    if lis is None:
+        return []
+    elif lis is not None:
+        ans_list = []
+        for word in lis:
+            if word not in ans_list:
+                ans_list.append(word)
+        return ans_list
 

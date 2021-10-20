@@ -24,6 +24,8 @@ ask_box = Object.InputBox(100, 100, 300, box_height, mode='A', input_font=font_p
 search_box = Object.InputBox(100, 300, 300, box_height, mode='S', input_font=font_path, font_size=font_size)
 input_box = [ask_box, search_box]
 
+# clear_ask = Object.Clear_Button()
+
 ask_txt = Object.Text(screen, 'Ask', input_font=font_path, font_size=font_size)
 search_txt = Object.Text(screen, 'Search', input_font=font_path, font_size=font_size)
 
@@ -46,16 +48,16 @@ while run:
             tag_list = box.ask_q.auto_tag
             y = 150
         elif box.mode == 'S':
-            tag_list = box.search_q.tag
+            tag_list = box.search_q.auto_tag
             y = 350
         button_l = []
         for i in range(len(tag_list)):
             space = 5
             if i > 0:
-                button = Object.Button(button_l[i - 1].x + button_l[i - 1].w + space, y, 15 * (len(tag_list[i])), 37,
-                                       font_path)
+                button = Object.Auto_Tag_Button(button_l[i - 1].x + button_l[i - 1].w + space, y, 15 * (len(tag_list[i])), 35,
+                                                font_path)
             else:
-                button = Object.Button(100, y, 10 * (len(tag_list[i])), 37, font_path)
+                button = Object.Auto_Tag_Button(100, y, 15 * (len(tag_list[i])), 35, font_path)
             button_l.append(button)
 
         for i in range(len(button_l)):

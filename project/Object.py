@@ -37,15 +37,15 @@ class Rec(Text):
         self.font = font
         self.color = color  # light gray
 
-    def draw(self, surface, text='', font_size=30, letter_color=(255, 255, 255), letter_back=None):
+    def draw(self, surface, text='', font_size=27, letter_color=(255, 255, 255), letter_back=None):
         pg.draw.rect(surface, self.color, (self.x, self.y, self.w, self.h))
         if text != '':
             text_on_button = Text(surface, text, font_size, self.font, letter_color, letter_back)
             text_on_button.write_c(self.x + self.w / 2, self.y + self.h / 2)
 
 
-class Button(Rec):
-    def __init__(self, x=0, y=0, w=0, h=0, font=None, color=(0, 200, 0)):
+class Auto_Tag_Button(Rec):
+    def __init__(self, x, y, w, h, font=None, color=(0, 200, 0)):
         self.color = color
         self.font = font
         self.status = True
@@ -70,8 +70,34 @@ class Button(Rec):
                     self.status = True
 
 
+class Clear_Button(Rec):
+    def __init__(self, x, y, w, h, input_box, font=None, color=(0, 200, 200)):
+        self.color = color
+        self.font = font
+        self.input_box = input_box
+        Rec.__init__(self, x, y, w, h, font, self.color)
+
+    def mouse_on(self):
+        (pos_x, pos_y) = pg.mouse.get_pos()
+        if self.x <= pos_x <= self.x + self.w and self.y <= pos_y <= self.y + self.h:
+            is_mouse_on = True
+        else:
+            is_mouse_on = False
+        return is_mouse_on
+
+    def handle_event(self, event):
+        if event.type == pg.MOUSEBUTTONDOWN:
+            if self.mouse_on():
+                self.input_box.text = ''
+
+
+
+
+
+
+
 class InputBox:
-    def __init__(self, x, y, w, h,mode, text='', input_font=None, font_size=32):
+    def __init__(self, x, y, w, h, mode, text='', input_font=None, font_size=32):
         self.rect = pg.Rect(x, y, w, h)
         self.color = pg.Color('lightskyblue3')  # inactive color
         self.text = text
