@@ -7,7 +7,7 @@ import Search_Question
 # txt = 'เมื่อวานซื้อ"ฟาร์มเฮ้าส์"มา แพงมากเลย"ไอโฟน"ยังถูกกว่า'
 # txt = 'ทัมมัยคะแนนผมแย่จังครัชจารย์'
 # txt = 'แม่กับน้องกินปลาย่างอยู่หน้าบ้านกัน 2 คน'
-
+# txt = '"กัปตันซึบาสะ"จะจบมั้ย หรือนักเขียนจะตายก่อน'
 tag = []
 
 # print('manual tag : ', q.manual_tag)
@@ -20,7 +20,7 @@ tag = []
 
 
 
-txt = '"กัปตันซึบาสะ"จะจบมั้ย หรือนักเขียนจะตายก่อน'
+txt = 'กล้วยบวชชี'
 aq = Ask_Question.Ask_Question()
 aq.add_text(txt)
 # sq = Search_Question.Search_Question()
@@ -33,7 +33,7 @@ aq.save()
 # sq.save()
 
 print('question : ', aq.text)
-# print('token : ', aq.token)
+print('token : ', aq.token)
 print('tag : ', aq.auto_tag)
 # print('tagged question : ', aq.tagged_question)
 print('')
