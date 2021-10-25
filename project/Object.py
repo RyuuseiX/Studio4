@@ -88,7 +88,7 @@ class Clear_Button(Rec):
     def handle_event(self, event):
         if event.type == pg.MOUSEBUTTONDOWN:
             if self.mouse_on():
-                self.input_box.text = ''
+                self.input_box.clear()
 
 
 
@@ -153,8 +153,13 @@ class InputBox:
 
     def update(self):
         # Resize the box if the text is too long.
-        width = max(200, self.txt_surface.get_width()+10)
-        self.rect.w = width
+        pass
+        # width = max(500, self.txt_surface.get_width()+10)
+        # self.rect.w = width
+
+    def clear(self):
+        self.text = ''
+        self.txt_surface = self.font.render(self.text, True, pg.Color('dodgerblue2'))
 
     def draw(self, screen):
         # Blit the text.

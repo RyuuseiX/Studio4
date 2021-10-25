@@ -9,7 +9,8 @@ pg.init()
 win_x, win_y = 1280, 720
 screen = pg.display.set_mode((win_x, win_y))
 
-font_path = './font/FC Minimal Regular.ttf'
+# font_path = './font/FC Minimal Regular.ttf'
+font_path = '/Users/Peace/Desktop/Studio4-main/project/font/FCMinimalRegular.otf'
 font_size = 30
 
 black = (0, 0, 0)
@@ -19,15 +20,22 @@ light_gray = (230, 230, 230)
 green = (0, 200, 0)
 red = (200, 0, 0)
 
+left_x = 150
 box_height = 37
-ask_box = Object.InputBox(100, 100, 300, box_height, mode='A', input_font=font_path, font_size=font_size)
-search_box = Object.InputBox(100, 300, 300, box_height, mode='S', input_font=font_path, font_size=font_size)
-input_box = [ask_box, search_box]
+box_width = 700
 
-# clear_ask = Object.Clear_Button()
+ask_box    = Object.InputBox(x=left_x, y=100, w=box_width, h=box_height, mode='A', input_font=font_path, font_size=font_size)
+search_box = Object.InputBox(x=left_x, y=300, w=box_width, h=box_height, mode='S', input_font=font_path, font_size=font_size)
+input_box  = [ask_box, search_box]
+
+clear_ask = Object.Clear_Button(x=left_x+box_width, y=100, w=100, h=box_height, input_box=ask_box)
+clear_search = Object.Clear_Button(x=left_x+box_width, y=300, w=100, h=box_height, input_box=search_box)
+clear_list = [clear_ask, clear_search]
+
 
 ask_txt = Object.Text(screen, 'Ask', input_font=font_path, font_size=font_size)
 search_txt = Object.Text(screen, 'Search', input_font=font_path, font_size=font_size)
+
 
 ask_q = Ask_Question.Ask_Question()
 search_q = Search_Question.Search_Question()
@@ -35,10 +43,11 @@ search_q = Search_Question.Search_Question()
 run = True
 
 while run:
+
     screen.fill(white)
 
-    ask_txt.write_tl(100, 100 - 32)
-    search_txt.write_tl(100, 300-32)
+    ask_txt.write_tl(left_x, 100 - 32)
+    search_txt.write_tl(left_x, 300-32)
 
     # input_box
     for box in input_box:
@@ -50,6 +59,7 @@ while run:
         elif box.mode == 'S':
             tag_list = box.search_q.auto_tag
             y = 350
+        
         button_l = []
         for i in range(len(tag_list)):
             space = 5
@@ -57,11 +67,14 @@ while run:
                 button = Object.Auto_Tag_Button(button_l[i - 1].x + button_l[i - 1].w + space, y, 15 * (len(tag_list[i])), 35,
                                                 font_path)
             else:
-                button = Object.Auto_Tag_Button(100, y, 15 * (len(tag_list[i])), 35, font_path)
+                button = Object.Auto_Tag_Button(left_x, y, 15 * (len(tag_list[i])), 35, font_path)
             button_l.append(button)
 
         for i in range(len(button_l)):
             button_l[i].draw(screen, text=tag_list[i])
+
+    for clear in clear_list:
+        clear.draw(screen, text='Clear')
 
     pg.time.delay(1)
     pg.display.update()
@@ -72,6 +85,9 @@ while run:
 
         for button in button_l:
             button.handle_event(event)
+
+        for clear in clear_list:
+            clear.handle_event(event)
 
         if event.type == pg.QUIT:
             pg.quit()
