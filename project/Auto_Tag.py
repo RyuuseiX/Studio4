@@ -15,10 +15,7 @@ def tokenize(question, engine='newmm'):
                 count = 1
             elif (t == '"') and (count == 1):
                 new_word = new_word.replace('"' + word + '"', ' ')
-                if question.mode == 'A':
-                    question.add_spec_tag(word)
-                elif question.mode == 'S':
-                    question.add_spec_tag(word)
+                question.add_spec_tag(word)
                 count = 0
                 word = ''
             elif count == 1:

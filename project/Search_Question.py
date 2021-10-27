@@ -12,7 +12,9 @@ class Search_Question:
         self.tagged_question = {}
 
     def save(self):
-        self.tagged_question = {'Question': self.text, 'Tag': self.auto_tag, 'Neg_Tag': self.neg_tag}
+        self.tagged_question = {'Question': self.text, 'Tag': [], 'Neg_Tag': self.neg_tag}
+        self.tagged_question['Tag'].extend(self.auto_tag)
+        self.tagged_question['Tag'].extend(self.pos_tag)
 
         return self.tagged_question
 
