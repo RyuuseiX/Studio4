@@ -62,10 +62,13 @@ class Auto_Tag_Button(Rec):
     def handle_event(self, event):
         if event.type == pg.MOUSEBUTTONDOWN:
             if self.mouse_on():
+                print('Yes')
                 if self.status:
+                    print('Off')
                     self.color = (230, 230, 230)
                     self.status = False
                 elif not self.status:
+                    print('On')
                     self.color = (0, 200, 0)
                     self.status = True
 
@@ -89,6 +92,13 @@ class Clear_Button(Rec):
         if event.type == pg.MOUSEBUTTONDOWN:
             if self.mouse_on():
                 self.input_box.clear()
+                if self.input_box.mode == 'A':
+                    self.input_box.ask_q.add_text(self.input_box.text)
+                    Auto_Tag.auto_tag(self.input_box.ask_q)
+
+                elif self.input_box.mode == 'S':
+                    self.input_box.search_q.add_text(self.input_box.text)
+                    Auto_Tag.auto_tag(self.input_box.search_q)
 
 
 
