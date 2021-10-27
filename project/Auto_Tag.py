@@ -46,53 +46,23 @@ def hierarchy_tag(question):
 def find_hierarchy(word_list, word_dict):
     tag_list = []
 
-    # 1 token
-    for word in word_list:
-        found_new_tag = True
-        running_word = word
-        while found_new_tag:
-            found_new_tag = False
-            for key in word_dict:
-                if running_word in word_dict[key]:
-                    found_new_tag = True
-                    tag_list.append(running_word)
-                    if running_word == key:
-                        found_new_tag = False
-                    running_word = key
-                    break
-
-    # 2 tokens
-    for i in range(len(word_list)-1):
-        word = word_list[i]+word_list[i+1]
-        found_new_tag = True
-        running_word = word
-        while found_new_tag:
-            found_new_tag = False
-            for key in word_dict:
-                if running_word in word_dict[key]:
-                    found_new_tag = True
-                    tag_list.append(running_word)
-                    if running_word == key:
-                        found_new_tag = False
-                    running_word = key
-                    break
-
-    # 3 tokens
-    for i in range(len(word_list) - 2):
-        word = word_list[i] + word_list[i + 1] + word_list[i+2]
-        found_new_tag = True
-        running_word = word
-        while found_new_tag:
-            found_new_tag = False
-            for key in word_dict:
-                if running_word in word_dict[key]:
-                    found_new_tag = True
-                    tag_list.append(running_word)
-                    if running_word == key:
-                        found_new_tag = False
-                    running_word = key
-                    break
-
+    for j in range(3):
+        for i in range(len(word_list) - j):
+            word = ''
+            for k in range(j+1):
+                word += word_list[k]
+            found_new_tag = True
+            running_word = word
+            while found_new_tag:
+                found_new_tag = False
+                for key in word_dict:
+                    if running_word in word_dict[key]:
+                        found_new_tag = True
+                        tag_list.append(running_word)
+                        if running_word == key:
+                            found_new_tag = False
+                        running_word = key
+                        break
     return tag_list
 
 
