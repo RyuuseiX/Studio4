@@ -51,16 +51,19 @@ def find_hierarchy(word_list, word_dict):
             word = ''
             for k in range(j+1):
                 word += word_list[k]
+
             found_new_tag = True
             running_word = word
             while found_new_tag:
                 found_new_tag = False
+
                 for key in word_dict:
                     if running_word in word_dict[key]:
                         found_new_tag = True
                         tag_list.append(running_word)
                         if running_word == key:
                             found_new_tag = False
+
                         running_word = key
                         break
     return tag_list
