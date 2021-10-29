@@ -97,11 +97,6 @@ class Clear_Button(Rec):
                     Auto_Tag.auto_tag(self.input_box.search_q)
 
 
-
-
-
-
-
 class InputBox:
     def __init__(self, x, y, w, h, mode, text='', input_font=None, font_size=32):
         self.rect = pg.Rect(x, y, w, h)
