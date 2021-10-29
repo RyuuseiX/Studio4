@@ -29,27 +29,27 @@ class Text:
 
 
 class Rec(Text):
-    def __init__(self, x=0, y=0, w=0, h=0, font=None, color=(230, 230, 230)):
+    def __init__(self, x=0, y=0, w=0, h=0, font=None, color=(230, 230, 230), text=''):
         self.x = x  # Position X
         self.y = y  # Position Y
         self.w = w  # Width
         self.h = h  # Height
         self.font = font
         self.color = color  # light gray
+        self.text = text
 
-    def draw(self, surface, text='', font_size=27, letter_color=(255, 255, 255), letter_back=None):
+    def draw(self, surface, font_size=27, letter_color=(255, 255, 255), letter_back=None):
         pg.draw.rect(surface, self.color, (self.x, self.y, self.w, self.h))
-        if text != '':
-            text_on_button = Text(surface, text, font_size, self.font, letter_color, letter_back)
+        if self.text != '':
+            text_on_button = Text(surface, self.text, font_size, self.font, letter_color, letter_back)
             text_on_button.write_c(self.x + self.w / 2, self.y + self.h / 2)
 
 
 class Auto_Tag_Button(Rec):
-    def __init__(self, x, y, w, h, font=None, color=(0, 200, 0)):
-        self.color = color
+    def __init__(self, x, y, w, h, font=None, color=(0, 200, 0), text=''):
         self.font = font
         self.status = True
-        Rec.__init__(self, x, y, w, h, font, self.color)
+        Rec.__init__(self, x, y, w, h, font, color, text)
 
     def mouse_on(self):
         (pos_x, pos_y) = pg.mouse.get_pos()
@@ -62,23 +62,19 @@ class Auto_Tag_Button(Rec):
     def handle_event(self, event):
         if event.type == pg.MOUSEBUTTONDOWN:
             if self.mouse_on():
-                print('Yes')
                 if self.status:
-                    print('Off')
                     self.color = (230, 230, 230)
                     self.status = False
                 elif not self.status:
-                    print('On')
                     self.color = (0, 200, 0)
                     self.status = True
 
 
 class Clear_Button(Rec):
-    def __init__(self, x, y, w, h, input_box, font=None, color=(0, 200, 200)):
-        self.color = color
+    def __init__(self, x, y, w, h, input_box, font=None, color=(0, 200, 200), text=''):
         self.font = font
         self.input_box = input_box
-        Rec.__init__(self, x, y, w, h, font, self.color)
+        Rec.__init__(self, x, y, w, h, font, color, text)
 
     def mouse_on(self):
         (pos_x, pos_y) = pg.mouse.get_pos()
