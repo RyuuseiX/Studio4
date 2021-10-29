@@ -20,7 +20,7 @@ tag = []
 
 
 
-txt = 'กล้วยบวชชี'
+txt = 'เส้นผมร่วง'
 aq = Ask_Question.Ask_Question()
 aq.add_text(txt)
 # sq = Search_Question.Search_Question()
