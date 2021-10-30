@@ -7,6 +7,7 @@ class Search_Question:
         self.token = []
         self.auto_tag = []
         self.spec_tag = []
+        self.disable_tag = []
         self.pos_tag = []
         self.neg_tag = []
         self.tagged_question = {}
@@ -15,6 +16,8 @@ class Search_Question:
         self.tagged_question = {'Question': self.text, 'Tag': [], 'Neg_Tag': self.neg_tag}
         self.tagged_question['Tag'].extend(self.auto_tag)
         self.tagged_question['Tag'].extend(self.pos_tag)
+        for tag in self.disable_tag:
+            self.tagged_question['Tag'].remove(tag)
 
         return self.tagged_question
 

@@ -5,8 +5,9 @@ class Ask_Question:
         self.mode = 'A'
         self.text = ''
         self.token = []
-        self.spec_tag = []
         self.auto_tag = []
+        self.spec_tag = []
+        self.disable_tag = []
         self.manual_tag = []
         self.tagged_question = {}
 
@@ -14,6 +15,8 @@ class Ask_Question:
         self.tagged_question = {'Question': self.text, 'Tag': []}
         self.tagged_question['Tag'].extend(self.auto_tag)
         self.tagged_question['Tag'].extend(self.manual_tag)
+        for tag in self.disable_tag:
+            self.tagged_question['Tag'].remove(tag)
 
         return self.tagged_question
 

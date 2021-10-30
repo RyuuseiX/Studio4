@@ -67,6 +67,7 @@ while run:
 
         if box.mode == 'A':
             tag_list = box.ask_q.auto_tag
+            box.ask_q.disable_tag = disable_ask
             tag_y = 150
             ask_button_list = []
 
@@ -90,6 +91,7 @@ while run:
 
         elif box.mode == 'S':
             tag_list = box.search_q.auto_tag
+            box.search_q.disable_tag = disable_search
             tag_y = 350
             search_button_list = []
 
@@ -134,6 +136,7 @@ while run:
     for ask_button in ask_button_list:
         if ask_button.status is False:
             new_disable_ask.append(ask_button.text)
+
     for search_button in search_button_list:
         if search_button.status is False:
             new_disable_search.append(search_button.text)
