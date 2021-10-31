@@ -167,3 +167,14 @@ class InputBox:
         screen.blit(self.txt_surface, (self.rect.x+5, self.rect.y+4))
         # Blit the rect.
         pg.draw.rect(screen, self.color, self.rect, 2)
+
+
+class Image:
+    def __init__(self,x=0,y=0,name=''):
+        self.x = x # Position X
+        self.y = y # Position Y
+        self.img = pg.image.load('./image/'+name+'.png')
+        # self.img = pg.image.load('/Users/Peace/Desktop/Studio4-main/project/image/'+name+'.png')
+
+    def draw(self,screen):
+        screen.blit(self.img, (self.x, self.y))
