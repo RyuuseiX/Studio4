@@ -9,8 +9,8 @@ pg.init()
 win_x, win_y = 1280, 720
 screen = pg.display.set_mode((win_x, win_y))
 
-font_path = './font/FC Minimal Regular.ttf'
-# font_path = '/Users/Peace/Desktop/Studio4-main/project/font/FCMinimalRegular.otf'
+# font_path = './font/FC Minimal Regular.ttf'
+font_path = '/Users/Peace/Desktop/Studio4-main/project/font/FCMinimalRegular.otf'
 font_size = 30
 
 black = (0, 0, 0)
@@ -21,44 +21,48 @@ green = (0, 200, 0)
 red = (200, 0, 0)
 
 left_x = 150
+top_y  = 350 
 box_height = 37
 box_width = 700
 
-ask_box = Object.InputBox(x=left_x, y=100, w=box_width, h=box_height, mode='A', input_font=font_path,
+search_box = Object.InputBox(x=left_x, y=top_y, w=box_width, h=box_height, mode='S', input_font=font_path,
                           font_size=font_size)
-search_box = Object.InputBox(x=left_x, y=300, w=box_width, h=box_height, mode='S', input_font=font_path,
+ask_box = Object.InputBox(x=left_x, y=top_y+200, w=box_width, h=box_height, mode='A', input_font=font_path,
                              font_size=font_size)
-input_box = [ask_box, search_box]
+input_box = [search_box, ask_box]
 
-clear_ask = Object.Clear_Button(x=left_x + box_width, y=100, w=100, h=box_height, input_box=ask_box, text='Clear')
-clear_search = Object.Clear_Button(x=left_x + box_width, y=300, w=100, h=box_height, input_box=search_box, text='Clear')
-clear_list = [clear_ask, clear_search]
+clear_search = Object.Clear_Button(x=left_x + box_width, y=top_y, w=100, h=box_height, input_box=search_box, text='Clear')
+clear_ask = Object.Clear_Button(x=left_x + box_width, y=top_y+200, w=100, h=box_height, input_box=ask_box, text='Clear')
+clear_list = [clear_search, clear_ask]
 
-ask_txt = Object.Text(screen, 'Ask', input_font=font_path, font_size=font_size)
 search_txt = Object.Text(screen, 'Search', input_font=font_path, font_size=font_size)
+ask_txt = Object.Text(screen, 'Ask', input_font=font_path, font_size=font_size)
 
-ask_q = Ask_Question.Ask_Question()
 search_q = Search_Question.Search_Question()
+ask_q = Ask_Question.Ask_Question()
+
+disable_search = []
+new_disable_search = []
 
 disable_ask = []
 new_disable_ask = []
 
-disable_search = []
-new_disable_search = []
+image_title = Object.Image(140,0,'108')
+image_list = [image_title]
 
 run = True
 while run:
 
     screen.fill(white)
 
-    ask_txt.write_tl(left_x, 100 - 32)
-    search_txt.write_tl(left_x, 300 - 32)
-
-    disable_ask = new_disable_ask
-    new_disable_ask = []
+    search_txt.write_tl(left_x, top_y-32)
+    ask_txt.write_tl(left_x, top_y+200-32)
 
     disable_search = new_disable_search
     new_disable_search = []
+
+    disable_ask = new_disable_ask
+    new_disable_ask = []
 
     # input_box
     for box in input_box:
@@ -68,8 +72,9 @@ while run:
         if box.mode == 'A':
             tag_list = box.ask_q.auto_tag
             box.ask_q.disable_tag = disable_ask
-            tag_y = 150
+            tag_y = top_y+250
             ask_button_list = []
+            enable_ask = tag_list.copy()
 
             for i in range(len(tag_list)):
                 space = 5
@@ -85,14 +90,17 @@ while run:
                 if ask_button.text in disable_ask:
                     ask_button.status = False
                     ask_button.color = light_gray
+                    enable_ask.remove(ask_button.text)
 
                 ask_button_list.append(ask_button)
                 ask_button.draw(screen)
 
+            print(box.ask_q.text, enable_ask)
+
         elif box.mode == 'S':
             tag_list = box.search_q.auto_tag
             box.search_q.disable_tag = disable_search
-            tag_y = 350
+            tag_y = top_y+50
             search_button_list = []
 
             for i in range(len(tag_list)):
@@ -112,6 +120,9 @@ while run:
 
                 search_button_list.append(search_button)
                 search_button.draw(screen)
+
+    for i in image_list:
+        i.draw(screen)
 
     for clear in clear_list:
         clear.draw(screen)
