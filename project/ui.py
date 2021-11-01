@@ -9,8 +9,8 @@ pg.init()
 win_x, win_y = 1280, 720
 screen = pg.display.set_mode((win_x, win_y))
 
-# font_path = './font/FC Minimal Regular.ttf'
-font_path = '/Users/Peace/Desktop/Studio4-main/project/font/FCMinimalRegular.otf'
+font_path = './font/FC Minimal Regular.ttf'
+# font_path = '/Users/Peace/Desktop/Studio4-main/project/font/FCMinimalRegular.otf'
 font_size = 30
 
 black = (0, 0, 0)
@@ -47,7 +47,7 @@ new_disable_search = []
 disable_ask = []
 new_disable_ask = []
 
-image_title = Object.Image(140,0,'108')
+image_title = Object.Image(140, 0, '108')
 image_list = [image_title]
 
 run = True
@@ -74,7 +74,7 @@ while run:
             box.ask_q.disable_tag = disable_ask
             tag_y = top_y+250
             ask_button_list = []
-            enable_ask = tag_list.copy()
+            # print(tag_list)
 
             for i in range(len(tag_list)):
                 space = 5
@@ -90,12 +90,9 @@ while run:
                 if ask_button.text in disable_ask:
                     ask_button.status = False
                     ask_button.color = light_gray
-                    enable_ask.remove(ask_button.text)
 
                 ask_button_list.append(ask_button)
                 ask_button.draw(screen)
-
-            print(box.ask_q.text, enable_ask)
 
         elif box.mode == 'S':
             tag_list = box.search_q.auto_tag

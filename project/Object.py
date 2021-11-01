@@ -170,11 +170,11 @@ class InputBox:
 
 
 class Image:
-    def __init__(self,x=0,y=0,name=''):
-        self.x = x # Position X
-        self.y = y # Position Y
+    def __init__(self, x=0, y=0, name=''):
+        self.x = x  # Position X
+        self.y = y  # Position Y
         self.img = pg.image.load('./image/'+name+'.png')
         # self.img = pg.image.load('/Users/Peace/Desktop/Studio4-main/project/image/'+name+'.png')
 
-    def draw(self,screen):
+    def draw(self, screen):
         screen.blit(self.img, (self.x, self.y))
