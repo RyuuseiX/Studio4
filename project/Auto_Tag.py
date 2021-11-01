@@ -6,6 +6,7 @@ import Word_Dict
 
 
 def tokenize(question, engine='newmm'):
+    question.spec_tag = []
     if question.text.count('"') >= 2:
         new_word = question.text
         count = 0
@@ -26,7 +27,7 @@ def tokenize(question, engine='newmm'):
         question.token = pyt.word_tokenize(new_word, engine=engine, keep_whitespace=False)
     else:
         question.token = pyt.word_tokenize(question.text, engine=engine, keep_whitespace=False)
-        question.spec_tag = []
+
 
 
 def hierarchy_tag(question):
