@@ -100,11 +100,31 @@ def find_hierarchy(word_list, word_dict):
 
 def find_word(word_list, word_dict):
     tag_list = []
+
+    # 1 token
     for word in word_list:
         for key in word_dict:
             if word in word_dict[key]:
                 tag_list.append(word)
                 break
+
+    # 2 tokens
+    for i in range(len(word_list) - 1):
+        word = word_list[i] + word_list[i + 1]
+        for key in word_dict:
+            if word in word_dict[key]:
+                tag_list.append(word)
+                break
+
+    # 3 tokens
+    for i in range(len(word_list) - 2):
+        word = word_list[i] + word_list[i + 1] + word_list[i + 2]
+        for key in word_dict:
+            if word in word_dict[key]:
+                tag_list.append(word)
+                break
+
+
 
     return tag_list
 
