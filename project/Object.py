@@ -172,10 +172,15 @@ class InputBox:
 
 
 class Image:
-    def __init__(self, x=0, y=0, name=''):
+    def __init__(self, x=0, y=0, name='', status=True):
+        self.name = name
+        self.img = self.load()
         self.x = x  # Position X
         self.y = y  # Position Y
-        self.img = pg.image.load('./image/'+name+'.png')
+        self.w = self.img.get_width()
+        self.h = self.img.get_height()
+        self.status = status
+
         # self.img = pg.image.load('/Users/Peace/Desktop/Studio4-main/project/image/'+name+'.png')
 
     def draw(self, screen):
@@ -183,3 +188,31 @@ class Image:
 
     def resize(self, new_size):
         self.img = pg.transform.scale(self.img, new_size)
+        self.w = self.img.get_width()
+        self.h = self.img.get_height()
+
+    def load(self):
+        img = pg.image.load('./image/' + self.name + '.png')
+        return img
+
+    def mouse_on(self):
+        (pos_x, pos_y) = pg.mouse.get_pos()
+        if self.x <= pos_x <= self.x + self.w and self.y <= pos_y <= self.y + self.h:
+            is_mouse_on = True
+        else:
+            is_mouse_on = False
+        return is_mouse_on
+
+    def handle_event(self, event):
+        if event.type == pg.MOUSEBUTTONDOWN:
+            if self.mouse_on():
+                if 'fill' not in self.name:
+                    self.name += ' fill'
+                    self.img = self.load()
+                    self.resize((self.w, self.h))
+            elif not self.mouse_on():
+                if 'fill' in self.name:
+                    self.name = self.name.replace(' fill', '')
+                    self.img = self.load()
+                    self.resize((self.w, self.h))
+

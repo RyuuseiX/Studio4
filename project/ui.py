@@ -21,7 +21,7 @@ green = (0, 200, 0)
 red = (200, 0, 0)
 
 left_x = 150
-top_y  = 350 
+top_y = 350
 box_height = 37
 box_width = 700
 space = 5
@@ -47,12 +47,13 @@ disable_ask = []
 new_disable_ask = []
 
 button_size = (30, 30)
+image_space = 5
 image_title = Object.Image(140, 0, '108')
 image_manual = Object.Image(left_x, top_y + 250, 'positive')
 image_manual.resize(button_size)
 image_positive = Object.Image(left_x, top_y + 50, 'positive')
 image_positive.resize(button_size)
-image_negative = Object.Image(left_x + button_size[0] + space, top_y + 50, 'negative')
+image_negative = Object.Image(left_x + button_size[0] + image_space, top_y + 50, 'negative')
 image_negative.resize(button_size)
 image_list = [image_title, image_manual, image_positive, image_negative]
 
@@ -107,7 +108,7 @@ while run:
         elif box.mode == 'S':
             tag_list = box.search_q.auto_tag
             box.search_q.disable_tag = disable_search
-            tag_y = top_y+50
+            tag_y = top_y + 50
             search_button_list = []
 
             for i in range(len(tag_list)):
@@ -130,9 +131,11 @@ while run:
 
                 if i == len(tag_list) - 1:
                     image_positive.x = search_button_list[i].x + search_button_list[i].w + space
+
             if len(tag_list) == 0:
                 image_positive.x = left_x
-            image_negative.x = image_positive.x + button_size[0] + space
+
+            image_negative.x = image_positive.x + button_size[0] + image_space
 
 
     for i in image_list:
@@ -153,6 +156,9 @@ while run:
 
         for clear in clear_list:
             clear.handle_event(event)
+
+        for img in image_list:
+            img.handle_event(event)
 
         if event.type == pg.QUIT:
             pg.quit()
