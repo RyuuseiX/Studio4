@@ -98,14 +98,16 @@ class Clear_Button(Rec):
 
 
 class InputBox:
-    def __init__(self, x, y, w, h, mode, text='', input_font=None, font_size=32):
+    def __init__(self, x, y, w, h, mode, text='', input_font=None, font_size=32, resizable=False):
         self.rect = pg.Rect(x, y, w, h)
+        self.w = self.rect.w
         self.color = pg.Color('lightskyblue3')  # inactive color
         self.text = text
         self.font = pg.font.Font(input_font, font_size)
         self.txt_surface = self.font.render(text, True, self.color)
         self.active = False
         self.mode = mode
+        self.resizable = resizable
         if self.mode == 'A':
             self.ask_q = Ask_Question.Ask_Question()
         elif self.mode == 'S':
@@ -154,9 +156,9 @@ class InputBox:
 
     def update(self):
         # Resize the box if the text is too long.
-        pass
-        # width = max(500, self.txt_surface.get_width()+10)
-        # self.rect.w = width
+        if self.resizable:
+            width = max(self.w, self.txt_surface.get_width()+10)
+            self.rect.w = width
 
     def clear(self):
         self.text = ''
@@ -178,3 +180,6 @@ class Image:
 
     def draw(self, screen):
         screen.blit(self.img, (self.x, self.y))
+
+    def resize(self, new_size):
+        self.img = pg.transform.scale(self.img, new_size)

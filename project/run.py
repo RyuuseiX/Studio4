@@ -20,7 +20,7 @@ tag = []
 
 
 
-txt = 'ซักผ้า รีดผ้า'
+txt = 'การเมืองการปกครอง'
 aq = Ask_Question.Ask_Question()
 aq.add_text(txt)
 # sq = Search_Question.Search_Question()
