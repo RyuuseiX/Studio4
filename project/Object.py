@@ -46,7 +46,7 @@ class Rec(Text):
 
 
 class Auto_Tag_Button(Rec):
-    def __init__(self, x, y, w, h, font=None, color=(0, 200, 0), text=''):
+    def __init__(self, x, y, w, h, font=None, color=(112, 173, 71), text=''):
         self.font = font
         self.status = True
         Rec.__init__(self, x, y, w, h, font, color, text)
@@ -63,10 +63,8 @@ class Auto_Tag_Button(Rec):
         if event.type == pg.MOUSEBUTTONDOWN:
             if self.mouse_on():
                 if self.status:
-                    self.color = (230, 230, 230)
                     self.status = False
                 elif not self.status:
-                    self.color = (0, 200, 0)
                     self.status = True
 
 
@@ -101,17 +99,23 @@ class InputBox:
     def __init__(self, x, y, w, h, mode, text='', input_font=None, font_size=32, resizable=False):
         self.rect = pg.Rect(x, y, w, h)
         self.w = self.rect.w
-        self.color = pg.Color('lightskyblue3')  # inactive color
         self.text = text
-        self.font = pg.font.Font(input_font, font_size)
-        self.txt_surface = self.font.render(text, True, self.color)
-        self.active = False
         self.mode = mode
         self.resizable = resizable
-        if self.mode == 'A':
-            self.ask_q = Ask_Question.Ask_Question()
-        elif self.mode == 'S':
-            self.search_q = Search_Question.Search_Question()
+
+        if self.mode in ['A', 'S']:
+            self.active = False
+            self.color = pg.Color('lightskyblue3')  # inactive color
+            if self.mode == 'A':
+                self.ask_q = Ask_Question.Ask_Question()
+            elif self.mode == 'S':
+                self.search_q = Search_Question.Search_Question()
+        elif self.mode in ['M', 'P', 'N']:
+            self.active = True
+            self.color = pg.Color('lightskyblue3')  # inactive color
+
+        self.font = pg.font.Font(input_font, font_size)
+        self.txt_surface = self.font.render(text, True, self.color)
 
     def handle_event(self, event):
         if event.type == pg.MOUSEBUTTONDOWN:  # ทำการเช็คว่ามีการคลิก Mouse หรือไม่
@@ -124,35 +128,60 @@ class InputBox:
             self.color = pg.Color('dodgerblue2') if self.active else pg.Color('lightskyblue3')  # เปลี่ยนสีของ InputBox
 
         if event.type == pg.KEYDOWN:
-            if self.active:
-                tone_list = ['่', '้', '๊', '๋', '์']
-                vowel_high_list = ['ิ', 'ี', 'ึ', 'ื', '็', 'ํ', 'ำ']
-                vowel_low_list = ['ุ', 'ู', 'ฺ']
+            if self.mode in ['A', 'S']:
+                if self.active is True:
+                    tone_list = ['่', '้', '๊', '๋', '์']
+                    vowel_high_list = ['ิ', 'ี', 'ึ', 'ื', '็', 'ํ', 'ำ']
+                    vowel_low_list = ['ุ', 'ู', 'ฺ']
 
-                if event.key == pg.K_RETURN:
-                    self.active = not self.active
-                    self.color = pg.Color('dodgerblue2') if self.active else pg.Color('lightskyblue3')
-                elif event.key == pg.K_BACKSPACE:
-                    self.text = self.text[:-1]
-                elif (len(self.text) > 1) and (self.text[len(self.text)-1] in tone_list) and (str(event.unicode) in tone_list):
-                    pass
-                elif (len(self.text) > 1) and (self.text[len(self.text)-1] in vowel_high_list) and (str(event.unicode) in vowel_high_list):
-                    pass
-                elif (len(self.text) > 1) and (self.text[len(self.text)-1] in vowel_low_list) and (str(event.unicode) in vowel_low_list):
-                    pass
-                else:
-                    self.text += str(event.unicode)
+                    if event.key == pg.K_RETURN:
+                        self.active = not self.active
+                        self.color = pg.Color('dodgerblue2') if self.active else pg.Color('lightskyblue3')
+                    elif event.key == pg.K_BACKSPACE:
+                        self.text = self.text[:-1]
+                    elif (len(self.text) > 1) and (self.text[len(self.text)-1] in tone_list) and (str(event.unicode) in tone_list):
+                        pass
+                    elif (len(self.text) > 1) and (self.text[len(self.text)-1] in vowel_high_list) and (str(event.unicode) in vowel_high_list):
+                        pass
+                    elif (len(self.text) > 1) and (self.text[len(self.text)-1] in vowel_low_list) and (str(event.unicode) in vowel_low_list):
+                        pass
+                    else:
+                        self.text += str(event.unicode)
 
-                # Re-render the text.
-                self.txt_surface = self.font.render(self.text, True, pg.Color('dodgerblue2'))
+                    # Re-render the text.
+                    self.txt_surface = self.font.render(self.text, True, pg.Color('dodgerblue2'))
 
-            if self.mode == 'A':
-                self.ask_q.add_text(self.text)
-                Auto_Tag.auto_tag(self.ask_q)
+                    if self.mode == 'A':
+                        self.ask_q.add_text(self.text)
+                        Auto_Tag.auto_tag(self.ask_q)
 
-            elif self.mode == 'S':
-                self.search_q.add_text(self.text)
-                Auto_Tag.auto_tag(self.search_q)
+                    elif self.mode == 'S':
+                        self.search_q.add_text(self.text)
+                        Auto_Tag.auto_tag(self.search_q)
+            elif self.mode in ['M', 'P', 'N']:
+                if self.active is True:
+                    tone_list = ['่', '้', '๊', '๋', '์']
+                    vowel_high_list = ['ิ', 'ี', 'ึ', 'ื', '็', 'ํ', 'ำ']
+                    vowel_low_list = ['ุ', 'ู', 'ฺ']
+
+                    if event.key == pg.K_RETURN:
+                        self.active = not self.active
+                        self.color = pg.Color('dodgerblue2') if self.active else pg.Color('lightskyblue3')
+                    elif event.key == pg.K_BACKSPACE:
+                        self.text = self.text[:-1]
+                    elif (len(self.text) > 1) and (self.text[len(self.text) - 1] in tone_list) and (
+                            str(event.unicode) in tone_list):
+                        pass
+                    elif (len(self.text) > 1) and (self.text[len(self.text) - 1] in vowel_high_list) and (
+                            str(event.unicode) in vowel_high_list):
+                        pass
+                    elif (len(self.text) > 1) and (self.text[len(self.text) - 1] in vowel_low_list) and (
+                            str(event.unicode) in vowel_low_list):
+                        pass
+                    else:
+                        self.text += str(event.unicode)
+
+                    self.txt_surface = self.font.render(self.text, True, pg.Color('dodgerblue2'))
 
     def update(self):
         # Resize the box if the text is too long.

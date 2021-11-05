@@ -24,10 +24,33 @@ left_x = 150
 top_y = 350
 box_height = 37
 box_width = 700
+tag_height = 35
+tag_width = 50
 space = 5
+image_space = 5
+button_size = (tag_height, tag_height)
 
-search_box = Object.InputBox(x=left_x, y=top_y, w=box_width, h=box_height, mode='S', input_font=font_path, font_size=font_size)
-ask_box = Object.InputBox(x=left_x, y=top_y+200, w=box_width, h=box_height, mode='A', input_font=font_path, font_size=font_size)
+
+image_title = Object.Image(140, 0, '108')
+image_manual = Object.Image(x=left_x, y=top_y + 250, name='positive')
+image_manual.resize(button_size)
+image_positive = Object.Image(x=left_x, y=top_y + 50, name='positive')
+image_positive.resize(button_size)
+image_negative = Object.Image(x=left_x + button_size[0] + image_space, y=top_y + 50, name='negative')
+image_negative.resize(button_size)
+image_list = [image_title, image_manual, image_positive, image_negative]
+
+
+search_box = Object.InputBox(x=left_x, y=top_y, w=box_width, h=box_height, mode='S',
+                             input_font=font_path, font_size=font_size, resizable=False)
+ask_box = Object.InputBox(x=left_x, y=top_y+200, w=box_width, h=box_height, mode='A',
+                          input_font=font_path, font_size=font_size, resizable=False)
+manual_box = Object.InputBox(x=image_manual.x + image_manual.w, y=image_manual.y, w=tag_width, h=tag_height, mode='M',
+                             input_font=font_path, font_size=font_size, resizable=True)
+positive_box = Object.InputBox(x=image_positive.x + image_positive.w, y=image_positive.y, w=tag_width, h=tag_height, mode='P',
+                               input_font=font_path, font_size=font_size, resizable=True)
+negative_box = Object.InputBox(x=image_negative.x + image_negative.w, y=image_negative.y, w=tag_width, h=tag_height, mode='N',
+                               input_font=font_path, font_size=font_size, resizable=True)
 input_box = [search_box, ask_box]
 
 clear_search = Object.Clear_Button(x=left_x + box_width, y=top_y, w=100, h=box_height, input_box=search_box, text='Clear')
@@ -45,17 +68,6 @@ new_disable_search = []
 
 disable_ask = []
 new_disable_ask = []
-
-button_size = (30, 30)
-image_space = 5
-image_title = Object.Image(140, 0, '108')
-image_manual = Object.Image(left_x, top_y + 250, 'positive')
-image_manual.resize(button_size)
-image_positive = Object.Image(left_x, top_y + 50, 'positive')
-image_positive.resize(button_size)
-image_negative = Object.Image(left_x + button_size[0] + image_space, top_y + 50, 'negative')
-image_negative.resize(button_size)
-image_list = [image_title, image_manual, image_positive, image_negative]
 
 run = True
 while run:
@@ -86,11 +98,11 @@ while run:
                 if i > 0:
                     ask_button = Object.Auto_Tag_Button(
                         x=ask_button_list[i - 1].x + ask_button_list[i - 1].w + space, y=tag_y, w=15 * (len(tag_list[i])),
-                        h=35, font=font_path, text=tag_list[i])
+                        h=tag_height, font=font_path, text=tag_list[i])
                 elif i == 0:
                     ask_button = Object.Auto_Tag_Button(
                         x=left_x, y=tag_y, w=15 * (len(tag_list[i])),
-                        h=35, font=font_path, text=tag_list[i])
+                        h=tag_height, font=font_path, text=tag_list[i])
 
                 if ask_button.text in disable_ask:
                     ask_button.status = False
