@@ -141,20 +141,20 @@ while run:
 
 
         elif box.mode == 'S':
-            tag_list = box.search_q.auto_tag
+            auto_tag_list = box.search_q.auto_tag
             box.search_q.disable_tag = disable_search
             tag_y = top_y + 50
             search_button_list = []
 
-            for i in range(len(tag_list)):
+            for i in range(len(auto_tag_list)):
                 if i > 0:
                     search_button = Object.Auto_Tag_Button(
-                        x=search_button_list[i - 1].x + search_button_list[i - 1].w + space, y=tag_y, w=15 * (len(tag_list[i])),
-                        h=35, font=font_path, text=tag_list[i])
+                        x=search_button_list[i - 1].x + search_button_list[i - 1].w + space, y=tag_y, w=15 * (len(auto_tag_list[i])),
+                        h=35, font=font_path, text=auto_tag_list[i])
                 elif i == 0:
                     search_button = Object.Auto_Tag_Button(
-                        x=left_x, y=tag_y, w=15 * (len(tag_list[i])),
-                        h=35, font=font_path, text=tag_list[i])
+                        x=left_x, y=tag_y, w=15 * (len(auto_tag_list[i])),
+                        h=35, font=font_path, text=auto_tag_list[i])
 
                 if search_button.text in disable_search:
                     search_button.status = False
@@ -163,10 +163,53 @@ while run:
                 search_button_list.append(search_button)
                 search_button.draw(screen)
 
-                if i == len(tag_list) - 1:
+                if i == len(auto_tag_list) - 1:
                     image_positive.x = search_button_list[i].x + search_button_list[i].w + space
 
-            if len(tag_list) == 0:
+            pos_tag_list = box.search_q.pos_tag
+            for i in range(len(auto_tag_list), len(auto_tag_list) + len(pos_tag_list)):
+                if i > 0:
+                    search_button = Object.Auto_Tag_Button(
+                        x=search_button_list[i - 1].x + search_button_list[i - 1].w + space, y=tag_y, w=15 * (len(pos_tag_list[i - len(auto_tag_list)])),
+                        h=35, font=font_path, text=pos_tag_list[i - len(auto_tag_list)])
+                elif i == 0:
+                    search_button = Object.Auto_Tag_Button(
+                        x=left_x, y=tag_y, w=15 * (len(pos_tag_list[i])),
+                        h=35, font=font_path, text=pos_tag_list[i])
+
+                if search_button.text in disable_search:
+                    search_button.status = False
+                    search_button.color = light_gray
+
+                search_button_list.append(search_button)
+                search_button.draw(screen)
+
+                if i == len(auto_tag_list) + len(pos_tag_list) - 1:
+                    image_positive.x = search_button_list[i].x + search_button_list[i].w + space
+
+            neg_tag_list = box.search_q.neg_tag
+            for i in range(len(auto_tag_list) + len(pos_tag_list), len(auto_tag_list) + len(pos_tag_list) + len(neg_tag_list)):
+                if i > 0:
+                    search_button = Object.Auto_Tag_Button(
+                        x=search_button_list[i - 1].x + search_button_list[i - 1].w + space, y=tag_y, w=15 * (len(neg_tag_list[i - len(auto_tag_list) - len(pos_tag_list)])),
+                        h=35, font=font_path, color=(255, 111, 136), text=neg_tag_list[i - len(auto_tag_list) - len(pos_tag_list)])
+                elif i == 0:
+                    search_button = Object.Auto_Tag_Button(
+                        x=left_x, y=tag_y, w=15 * (len(neg_tag_list[i])),
+                        h=35, font=font_path, color=(255, 111, 136), text=neg_tag_list[i])
+
+                if search_button.text in disable_search:
+                    search_button.status = False
+                    search_button.color = light_gray
+
+                search_button_list.append(search_button)
+                search_button.draw(screen)
+
+                if i == len(auto_tag_list) + len(pos_tag_list) + len(neg_tag_list) - 1:
+                    image_positive.x = search_button_list[i].x + search_button_list[i].w + space
+
+
+            if len(auto_tag_list) + len(pos_tag_list) + len(neg_tag_list) == 0:
                 image_positive.x = left_x
 
 
@@ -219,7 +262,7 @@ while run:
                     img.check_w = tag_height
                     if manual_box.text != '':
                         ask_box.ask_q.add_manual_tag(manual_box.text)
-                        manual_box.text.clear()
+                        manual_box.clear()
 
                 elif 'positive' in img.name:
                     positive_box.active = False
@@ -228,7 +271,6 @@ while run:
                     image_negative.x = image_positive.x + tag_height
                     if positive_box.text != '':
                         search_box.search_q.add_pos_tag(positive_box.text)
-                        print(search_box.search_q.save())
                         positive_box.clear()
 
                 elif 'negative' in img.name:
@@ -236,7 +278,6 @@ while run:
                     img.check_w = tag_height
                     if negative_box.text != '':
                         search_box.search_q.add_neg_tag(negative_box.text)
-                        print(search_box.search_q.save())
                         negative_box.clear()
 
         for box in tag_box:
