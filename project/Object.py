@@ -102,55 +102,64 @@ class InputBox:
         self.text = text
         self.mode = mode
         self.resizable = resizable
+        self.mpn_list = ['M', 'P', 'N']
+        self.as_list = ['A', 'S']
 
-        if self.mode in ['A', 'S']:
+        if self.mode in self.as_list:
             self.active = False
-            self.color = pg.Color('lightskyblue3')  # inactive color
+            self.active_color = pg.Color('dodgerblue2')
+            self.inactive_color = pg.Color('lightskyblue3')
+            self.color = self.inactive_color  # inactive color
             if self.mode == 'A':
                 self.ask_q = Ask_Question.Ask_Question()
             elif self.mode == 'S':
                 self.search_q = Search_Question.Search_Question()
-        elif self.mode in ['M', 'P', 'N']:
+        elif self.mode in self.mpn_list:
             self.active = True
-            self.color = pg.Color('lightskyblue3')  # inactive color
+            self.active_color = (112, 173, 71)
+            if self.mode == 'N':
+                self.active_color = (255, 111, 136)
+            self.inactive_color = pg.Color('lightskyblue3')
+            self.color = self.active_color
 
         self.font = pg.font.Font(input_font, font_size)
         self.txt_surface = self.font.render(text, True, self.color)
 
     def handle_event(self, event):
         if event.type == pg.MOUSEBUTTONDOWN:  # ทำการเช็คว่ามีการคลิก Mouse หรือไม่
-            if self.rect.collidepoint(event.pos):  # ทำการเช็คว่าตำแหน่งของ Mouse อยู่บน InputBox นี้หรือไม่
-                # Toggle the active variable.
-                self.active = not self.active
-            else:
-                self.active = False
+            if self.mode in self.as_list:
+                if self.rect.collidepoint(event.pos):  # ทำการเช็คว่าตำแหน่งของ Mouse อยู่บน InputBox นี้หรือไม่
+                    # Toggle the active variable.
+                    if self.mode in self.as_list:
+                        self.active = not self.active
+                else:
+                    self.active = False
 
-            self.color = pg.Color('dodgerblue2') if self.active else pg.Color('lightskyblue3')  # เปลี่ยนสีของ InputBox
+                self.color = self.active_color if self.active else self.inactive_color  # เปลี่ยนสีของ InputBox
 
         if event.type == pg.KEYDOWN:
-            if self.mode in ['A', 'S']:
-                if self.active is True:
-                    tone_list = ['่', '้', '๊', '๋', '์']
-                    vowel_high_list = ['ิ', 'ี', 'ึ', 'ื', '็', 'ํ', 'ำ']
-                    vowel_low_list = ['ุ', 'ู', 'ฺ']
+            tone_list = ['่', '้', '๊', '๋', '์']
+            vowel_high_list = ['ิ', 'ี', 'ึ', 'ื', '็', 'ํ', 'ำ']
+            vowel_low_list = ['ุ', 'ู', 'ฺ']
 
-                    if event.key == pg.K_RETURN:
-                        self.active = not self.active
-                        self.color = pg.Color('dodgerblue2') if self.active else pg.Color('lightskyblue3')
-                    elif event.key == pg.K_BACKSPACE:
-                        self.text = self.text[:-1]
-                    elif (len(self.text) > 1) and (self.text[len(self.text)-1] in tone_list) and (str(event.unicode) in tone_list):
-                        pass
-                    elif (len(self.text) > 1) and (self.text[len(self.text)-1] in vowel_high_list) and (str(event.unicode) in vowel_high_list):
-                        pass
-                    elif (len(self.text) > 1) and (self.text[len(self.text)-1] in vowel_low_list) and (str(event.unicode) in vowel_low_list):
-                        pass
-                    else:
-                        self.text += str(event.unicode)
+            if self.active is True:
+                if event.key == pg.K_RETURN:
+                    self.active = False
+                    self.color = self.inactive_color
+                elif event.key == pg.K_BACKSPACE:
+                    self.text = self.text[:-1]
+                elif (len(self.text) > 1) and (self.text[len(self.text) - 1] in tone_list) and (str(event.unicode) in tone_list):
+                    pass
+                elif (len(self.text) > 1) and (self.text[len(self.text) - 1] in vowel_high_list) and (str(event.unicode) in vowel_high_list):
+                    pass
+                elif (len(self.text) > 1) and (self.text[len(self.text) - 1] in vowel_low_list) and (str(event.unicode) in vowel_low_list):
+                    pass
+                else:
+                    self.text += str(event.unicode)
 
-                    # Re-render the text.
-                    self.txt_surface = self.font.render(self.text, True, pg.Color('dodgerblue2'))
+                self.txt_surface = self.font.render(self.text, True, self.active_color)
 
+                if self.mode in self.as_list:
                     if self.mode == 'A':
                         self.ask_q.add_text(self.text)
                         Auto_Tag.auto_tag(self.ask_q)
@@ -158,46 +167,27 @@ class InputBox:
                     elif self.mode == 'S':
                         self.search_q.add_text(self.text)
                         Auto_Tag.auto_tag(self.search_q)
-            elif self.mode in ['M', 'P', 'N']:
-                if self.active is True:
-                    tone_list = ['่', '้', '๊', '๋', '์']
-                    vowel_high_list = ['ิ', 'ี', 'ึ', 'ื', '็', 'ํ', 'ำ']
-                    vowel_low_list = ['ุ', 'ู', 'ฺ']
-
-                    if event.key == pg.K_RETURN:
-                        self.active = not self.active
-                        self.color = pg.Color('dodgerblue2') if self.active else pg.Color('lightskyblue3')
-                    elif event.key == pg.K_BACKSPACE:
-                        self.text = self.text[:-1]
-                    elif (len(self.text) > 1) and (self.text[len(self.text) - 1] in tone_list) and (
-                            str(event.unicode) in tone_list):
-                        pass
-                    elif (len(self.text) > 1) and (self.text[len(self.text) - 1] in vowel_high_list) and (
-                            str(event.unicode) in vowel_high_list):
-                        pass
-                    elif (len(self.text) > 1) and (self.text[len(self.text) - 1] in vowel_low_list) and (
-                            str(event.unicode) in vowel_low_list):
-                        pass
-                    else:
-                        self.text += str(event.unicode)
-
-                    self.txt_surface = self.font.render(self.text, True, pg.Color('dodgerblue2'))
 
     def update(self):
         # Resize the box if the text is too long.
         if self.resizable:
-            width = max(self.w, self.txt_surface.get_width()+10)
+            width = max(self.w, self.txt_surface.get_width() + 50)
             self.rect.w = width
 
     def clear(self):
         self.text = ''
-        self.txt_surface = self.font.render(self.text, True, pg.Color('dodgerblue2'))
+        self.txt_surface = self.font.render(self.text, True, self.active_color)
 
     def draw(self, screen):
         # Blit the text.
-        screen.blit(self.txt_surface, (self.rect.x+5, self.rect.y+4))
-        # Blit the rect.
-        pg.draw.rect(screen, self.color, self.rect, 2)
+        if self.mode in self.as_list:
+            screen.blit(self.txt_surface, (self.rect.x + 5, self.rect.y + 5))
+            pg.draw.rect(screen, self.color, self.rect, 2)
+        elif self.mode in self.mpn_list:
+            if self.active:
+                screen.blit(self.txt_surface, (self.rect.x + 40, self.rect.y + 5))
+                pg.draw.rect(screen, self.color, self.rect, 2)
+
 
 
 class Image:
@@ -207,6 +197,7 @@ class Image:
         self.x = x  # Position X
         self.y = y  # Position Y
         self.w = self.img.get_width()
+        self.check_w = self.w
         self.h = self.img.get_height()
         self.status = status
 
@@ -226,7 +217,7 @@ class Image:
 
     def mouse_on(self):
         (pos_x, pos_y) = pg.mouse.get_pos()
-        if self.x <= pos_x <= self.x + self.w and self.y <= pos_y <= self.y + self.h:
+        if self.x <= pos_x <= self.x + self.check_w and self.y <= pos_y <= self.y + self.h:
             is_mouse_on = True
         else:
             is_mouse_on = False
@@ -239,6 +230,7 @@ class Image:
                     self.name += ' fill'
                     self.img = self.load()
                     self.resize((self.w, self.h))
+
             elif not self.mouse_on():
                 if 'fill' in self.name:
                     self.name = self.name.replace(' fill', '')
