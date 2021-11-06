@@ -9,14 +9,12 @@ class Ask_Question:
         self.spec_tag = []
         self.disable_tag = []
         self.manual_tag = []
-        self.all_tag = []
         self.tagged_question = {}
 
     def save(self):
         self.tagged_question = {'Question': self.text, 'Tag': []}
         self.tagged_question['Tag'].extend(self.auto_tag)
         self.tagged_question['Tag'].extend(self.manual_tag)
-        self.all_tag = self.tagged_question['Tag']
 
         for tag in self.disable_tag:
             self.tagged_question['Tag'].remove(tag)
