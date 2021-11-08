@@ -22,6 +22,9 @@ red = (200, 0, 0)
 
 left_x = 150
 top_y = 350
+right_x = win_x
+bottom_y = win_y
+
 box_height = 37
 box_width = 700
 tag_height = 35
@@ -61,8 +64,8 @@ clear_search = Object.Clear_Button(x=left_x + box_width, y=top_y, w=100, h=box_h
 clear_ask = Object.Clear_Button(x=left_x + box_width, y=top_y+200, w=100, h=box_height, input_box=ask_box, text='Clear')
 clear_list = [clear_search, clear_ask]
 
-search_txt = Object.Text(screen, 'Search', input_font=font_path, font_size=font_size)
-ask_txt = Object.Text(screen, 'Ask', input_font=font_path, font_size=font_size)
+search_txt = Object.Text(screen, 'Find Question', input_font=font_path, font_size=font_size)
+ask_txt = Object.Text(screen, 'New Question', input_font=font_path, font_size=font_size)
 
 disable_search = []
 new_disable_search = []
@@ -72,6 +75,9 @@ new_disable_ask = []
 
 run = True
 while run:
+
+    right_x = win_x
+    bottom_y = win_y
 
     screen.fill(white)
 
@@ -139,6 +145,8 @@ while run:
             if len(auto_tag_list) + len(manual_tag_list) == 0:
                 image_manual.x = left_x
 
+            elif len(auto_tag_list) + len(manual_tag_list) > 0:
+                right_x = max(right_x, ask_button_list[-1].x + ask_button_list[-1].w + tag_height + (2*space))
 
         elif box.mode == 'S':
             auto_tag_list = box.search_q.auto_tag
@@ -211,6 +219,10 @@ while run:
 
             if len(auto_tag_list) + len(pos_tag_list) + len(neg_tag_list) == 0:
                 image_positive.x = left_x
+
+
+            elif len(auto_tag_list) + len(pos_tag_list) + len(neg_tag_list) > 0:
+                right_x = max(right_x, search_button_list[-1].x + search_button_list[-1].w + (2 * tag_height) + (2 * space) + image_space)
 
 
     for box in tag_box:
