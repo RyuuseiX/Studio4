@@ -56,7 +56,7 @@ positive_box = Object.InputBox(x=image_positive.x, y=image_positive.y, w=tag_wid
 negative_box = Object.InputBox(x=image_negative.x, y=image_negative.y, w=tag_width, h=tag_height, mode='N',
                                input_font=font_path, font_size=font_size, resizable=True)
 input_box = [search_box, ask_box]
-tag_box = [manual_box, positive_box, negative_box]
+tag_box = [manual_box, negative_box, positive_box]
 for box in tag_box:
     box.rect.w = 0
 
@@ -225,10 +225,6 @@ while run:
                 right_x = max(right_x, search_button_list[-1].x + search_button_list[-1].w + (2 * tag_height) + (2 * space) + image_space)
 
 
-    for box in tag_box:
-        box.update()
-        box.draw(screen)
-
     for clear in clear_list:
         clear.draw(screen)
 
@@ -280,7 +276,7 @@ while run:
                     positive_box.active = False
                     positive_box.rect.w = 0
                     img.check_w = tag_height
-                    image_negative.x = image_positive.x + tag_height
+                    image_negative.x = image_positive.x + tag_height + image_space
                     if positive_box.text != '':
                         search_box.search_q.add_pos_tag(positive_box.text)
                         positive_box.clear()
@@ -307,10 +303,15 @@ while run:
             new_disable_search.append(search_button.text)
 
     if positive_box.active is True:
-        image_negative.x = image_positive.x + positive_box.rect.w
+        positive_box.update()
+        image_negative.x = image_positive.x + positive_box.rect.w + image_space
 
     for i in image_list:
         i.draw(screen)
+
+    for box in tag_box:
+        box.update()
+        box.draw(screen)
 
     pg.time.delay(1)
     pg.display.update()
