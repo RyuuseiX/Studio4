@@ -9,8 +9,8 @@ pg.init()
 win_x, win_y = 1280, 720
 screen = pg.display.set_mode((win_x, win_y))
 
-# font_path = './font/FC Minimal Regular.ttf'
-font_path = '/Users/Peace/Desktop/Studio4-main/project/font/FCMinimalRegular.otf'
+font_path = './font/FC Minimal Regular.ttf'
+# font_path = '/Users/Peace/Desktop/Studio4-main/project/font/FCMinimalRegular.otf'
 font_size = 30
 
 black = (0, 0, 0)
@@ -230,9 +230,6 @@ while run:
                 right_x = max(right_x, search_button_list[-1].x + search_button_list[-1].w + (2 * tag_height) + (2 * space) + image_space)
 
 
-    for box in tag_box:
-        box.update()
-        box.draw(screen)
 
     for clear in clear_list:
         clear.draw(screen)
@@ -285,7 +282,7 @@ while run:
                     positive_box.active = False
                     positive_box.rect.w = 0
                     img.check_w = tag_height
-                    image_negative.x = image_positive.x + tag_height
+                    image_negative.x = image_positive.x + tag_height + image_space
                     if positive_box.text != '':
                         search_box.search_q.add_pos_tag(positive_box.text)
                         positive_box.clear()
@@ -298,9 +295,9 @@ while run:
                         negative_box.clear()
 
         if expand_vertical:
-            vertical_scrollbar.event_handler(event)
+            vertical_scrollbar.handle_event(event)
         if expand_horizontal:
-            horizontal_scrollbar.event_handler(event)
+            horizontal_scrollbar.handle_event(event)
 
         for box in tag_box:
             box.handle_event(event)
@@ -317,22 +314,27 @@ while run:
             new_disable_search.append(search_button.text)
 
     if positive_box.active is True:
-        image_negative.x = image_positive.x + positive_box.rect.w
+        positive_box.update()
+        image_negative.x = image_positive.x + positive_box.rect.w + image_space
 
     for i in image_list:
         i.draw(screen)
 
+    for box in tag_box:
+        box.update()
+        box.draw(screen)
+
     if bottom_y > win_y:
         expand_vertical = True
         vertical_scrollbar.window_height = bottom_y
-        
+
     if right_x > win_x:
         expand_horizontal = True
         horizontal_scrollbar.window_width = right_x
 
     if expand_vertical:
         vertical_scrollbar.draw(screen)
-        
+
     if expand_horizontal:
         horizontal_scrollbar.draw(screen)
 
