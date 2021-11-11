@@ -1,16 +1,17 @@
 import pygame as pg
 import Object
-import Ask_Question
-import Search_Question
-import Auto_Tag
+import platform
 
 pg.init()
 
+os = platform.platform()[0].upper()
 win_x, win_y = 1280, 720
 screen = pg.display.set_mode((win_x, win_y))
 
-font_path = './font/FC Minimal Regular.ttf'
-# font_path = '/Users/Peace/Desktop/Studio4-main/project/font/FCMinimalRegular.otf'
+if os == 'W':
+    font_path = './font/FC Minimal Regular.ttf'
+elif os == 'M':
+    font_path = '/Users/Peace/Desktop/Studio4-main/project/font/FCMinimalRegular.otf'
 font_size = 30
 
 black = (0, 0, 0)

@@ -3,7 +3,9 @@ import Ask_Question
 import Search_Question
 import Auto_Tag
 import time
+import platform
 
+os = platform.platform()[0].upper()
 pg.init()
 
 
@@ -213,8 +215,11 @@ class Image:
         self.h = self.img.get_height()
 
     def load(self):
-        # img = pg.image.load('/Users/Peace/Desktop/Studio4-main/project/image/'+self.name+'.png')
-        img = pg.image.load('./image/' + self.name + '.png')
+        if os == 'W':
+            img = pg.image.load('./image/' + self.name + '.png')
+        elif os == 'M':
+            img = pg.image.load('/Users/Peace/Desktop/Studio4-main/project/image/' + self.name + '.png')
+
         return img
 
     def mouse_on(self):
@@ -251,11 +256,14 @@ class Vertical_ScrollBar(object):
         self.bar_up = pg.Rect(self.win_x - 20, 0, 20, 20)
         self.bar_down = pg.Rect(self.win_x - 20, self.win_y - 40, 20, 20)
 
-        # self.bar_up_image = pg.image.load('/Users/Peace/Desktop/scrollbar-master/up.png').convert()
-        # self.bar_down_image = pg.image.load('/Users/Peace/Desktop/scrollbar-master/down.png').convert()
 
-        self.bar_up_image = pg.image.load('./image/up.png').convert()
-        self.bar_down_image = pg.image.load('./image/down.png').convert()
+        if os == 'W':
+            self.bar_up_image = pg.image.load('./image/up.png').convert()
+            self.bar_down_image = pg.image.load('./image/down.png').convert()
+        elif os == 'M':
+            self.bar_up_image = pg.image.load('/Users/Peace/Desktop/scrollbar-master/up.png').convert()
+            self.bar_down_image = pg.image.load('/Users/Peace/Desktop/scrollbar-master/down.png').convert()
+
 
         self.on_bar = False
         self.mouse_diff = 0
@@ -345,15 +353,16 @@ class Horizontal_ScrollBar(object):
         self.change_x = 0
         self.win_x = 1280
         self.win_y = 720
-
         self.bar_left = pg.Rect(0, self.win_y - 20, 20, 20)
         self.bar_right = pg.Rect(self.win_x - 40, self.win_y - 20, 20, 20)
 
-        # self.bar_left_image = pg.image.load('/Users/Peace/Desktop/scrollbar-master/left.png').convert()
-        # self.bar_right_image = pg.image.load('/Users/Peace/Desktop/scrollbar-master/right.png').convert()
+        if os == 'W':
+            self.bar_left_image = pg.image.load('./image/left.png').convert()
+            self.bar_right_image = pg.image.load('./image/right.png').convert()
 
-        self.bar_left_image = pg.image.load('./image/left.png').convert()
-        self.bar_right_image = pg.image.load('./image/right.png').convert()
+        elif os == 'M':
+            self.bar_left_image = pg.image.load('/Users/Peace/Desktop/scrollbar-master/left.png').convert()
+            self.bar_right_image = pg.image.load('/Users/Peace/Desktop/scrollbar-master/right.png').convert()
 
         self.on_bar = False
         self.mouse_diff = 0
