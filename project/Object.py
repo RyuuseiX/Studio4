@@ -2,9 +2,9 @@ import pygame as pg
 import Ask_Question
 import Search_Question
 import Auto_Tag
+import time
 
 pg.init()
-
 
 class Text:
     def __init__(self, surface, input_text, font_size=32, input_font=None, letter_color=(0, 0, 0), letter_back=None):
@@ -201,8 +201,6 @@ class Image:
         self.h = self.img.get_height()
         self.status = status
 
-        # self.img = pg.image.load('/Users/Peace/Desktop/Studio4-main/project/image/'+name+'.png')
-
     def draw(self, screen):
         screen.blit(self.img, (self.x, self.y))
 
@@ -212,7 +210,8 @@ class Image:
         self.h = self.img.get_height()
 
     def load(self):
-        img = pg.image.load('./image/' + self.name + '.png')
+        img = pg.image.load('/Users/Peace/Desktop/Studio4-main/project/image/'+self.name+'.png')
+        # img = pg.image.load('./image/' + self.name + '.png')
         return img
 
     def mouse_on(self):
@@ -237,3 +236,180 @@ class Image:
                     self.img = self.load()
                     self.resize((self.w, self.h))
 
+
+
+
+
+class Vertical_ScrollBar(object):
+    def __init__(self, window_height):
+        self.y_axis = 0
+        self.window_height = window_height
+        self.change_y = 0
+        self.win_x = 1280
+        self.win_y = 720
+        
+        self.bar_up = pg.Rect(self.win_x - 20,0,20,20)
+        self.bar_down = pg.Rect(self.win_x - 20,self.win_y - 40,20,20)
+        
+        self.bar_up_image = pg.image.load("/Users/Peace/Desktop/scrollbar-master/up.png").convert()
+        self.bar_down_image = pg.image.load("/Users/Peace/Desktop/scrollbar-master/down.png").convert()
+        
+        self.on_bar = False
+        self.mouse_diff = 0
+        self.scroll = 0
+        self.scrollTimeStamp = 0
+        
+    def update(self):
+
+        bar_height = int((self.win_y - 40) / (self.window_height / (self.win_y * 1.0)))
+        self.bar_rect = pg.Rect(self.win_x - 20,20,20,bar_height)
+
+        self.y_axis += self.change_y
+        
+        if self.y_axis > 0:
+            self.y_axis = 0
+        elif (self.y_axis + self.window_height) < self.win_y:
+            self.y_axis = self.win_y - self.window_height
+            
+        height_diff = self.window_height - self.win_y
+        
+        scroll_length = self.win_y - self.bar_rect.height - 60
+        bar_half_length = self.bar_rect.height / 2 + 20
+        
+        if self.on_bar:
+            pos = pg.mouse.get_pos()
+            self.bar_rect.y = pos[1] - self.mouse_diff
+            if self.bar_rect.top < 20:
+                self.bar_rect.top = 20
+            elif self.bar_rect.bottom > (self.win_y - 40):
+                self.bar_rect.bottom = self.win_y - 40
+            
+            self.y_axis = int(height_diff / (scroll_length * 1.0) * (self.bar_rect.centery - bar_half_length) * -1)
+        else:
+            self.bar_rect.centery =  scroll_length / (height_diff * 1.0) * (self.y_axis * -1) + bar_half_length
+             
+        
+    def event_handler(self, event):
+        if event.type == pg.MOUSEBUTTONDOWN:
+            if event.button == 4: #scroll up
+                self.change_y = 20
+                self.scroll = 1
+                self.scrollTimeStamp = time.time()
+            elif event.button == 5: #scroll down
+                self.change_y = -20
+                self.scroll = 1
+                self.scrollTimeStamp = time.time()
+                
+            else:
+                pos = pg.mouse.get_pos()
+                if self.bar_rect.collidepoint(pos):
+                    self.mouse_diff = pos[1] - self.bar_rect.y
+                    self.on_bar = True
+                elif self.bar_up.collidepoint(pos):
+                    self.change_y = 5
+                elif self.bar_down.collidepoint(pos):
+                    self.change_y = -5
+                
+        if event.type == pg.MOUSEBUTTONUP:
+            if not self.scroll:
+                self.change_y = 0
+                self.on_bar = False
+        
+        if event.type == pg.KEYDOWN:
+            if event.key == pg.K_UP:
+                self.change_y = 10
+            elif event.key == pg.K_DOWN:
+                self.change_y = -10
+                
+        if event.type == pg.KEYUP:
+            if event.key == pg.K_UP:
+                self.change_y = 0
+            elif event.key == pg.K_DOWN:
+                self.change_y = 0
+          
+    def draw(self, screen):
+        pg.draw.rect(screen, (197,194,197), self.bar_rect)
+        
+        screen.blit(self.bar_up_image, (self.win_x - 20,0))
+        screen.blit(self.bar_down_image, (self.win_x - 20,self.win_y - 40))
+
+
+#--------------------------------------------------------------------------------
+
+class Horizontal_ScrollBar(object):
+    def __init__(self, window_width):
+        self.x_axis = 0
+        self.window_width = window_width
+        self.change_x = 0
+        self.win_x = 1280
+        self.win_y = 720
+
+        self.bar_left = pg.Rect(0,self.win_y - 20,20,20)
+        self.bar_right = pg.Rect(self.win_x - 40,self.win_y - 20,20,20)
+                
+        self.bar_left_image = pg.image.load("/Users/Peace/Desktop/scrollbar-master/left.png").convert()
+        self.bar_right_image = pg.image.load("/Users/Peace/Desktop/scrollbar-master/right.png").convert()
+        
+        self.on_bar = False
+        self.mouse_diff = 0
+        
+    def update(self):
+        bar_length = int((self.win_x - 40) / (self.window_width / (self.win_x * 1.0)))
+        self.bar_rect = pg.Rect(20,self.win_y - 20,bar_length,20)
+
+        self.x_axis += self.change_x
+        
+        if self.x_axis > 0:
+            self.x_axis = 0
+        elif (self.x_axis + self.window_width) < self.win_x:
+            self.x_axis = self.win_x - self.window_width
+            
+        width_diff = self.window_width - self.win_x
+        
+        scroll_length = self.win_x - self.bar_rect.width - 60
+        bar_half_height = self.bar_rect.width / 2 + 20
+        
+        if self.on_bar:
+            pos = pg.mouse.get_pos()
+            self.bar_rect.x = pos[0] - self.mouse_diff
+            if self.bar_rect.left < 20:
+                self.bar_rect.left = 20
+            elif self.bar_rect.right > (self.win_x - 40):
+                self.bar_rect.right = self.win_x - 40
+            
+            self.x_axis = int(width_diff / (scroll_length * 1.0) * (self.bar_rect.centerx - bar_half_height) * -1)
+        else:
+            self.bar_rect.centerx =  scroll_length / (width_diff * 1.0) * (self.x_axis * -1) + bar_half_height
+             
+        
+    def event_handler(self, event):
+        if event.type == pg.MOUSEBUTTONDOWN:
+            pos = pg.mouse.get_pos()
+            if self.bar_rect.collidepoint(pos):
+                self.mouse_diff = pos[0] - self.bar_rect.x
+                self.on_bar = True
+            elif self.bar_left.collidepoint(pos):
+                self.change_x = 5
+            elif self.bar_right.collidepoint(pos):
+                self.change_x = -5
+                
+        if event.type == pg.MOUSEBUTTONUP:
+            self.change_x = 0
+            self.on_bar = False
+        
+        if event.type == pg.KEYDOWN:
+            if event.key == pg.K_RIGHT:
+                self.change_x = -5
+            elif event.key == pg.K_LEFT:
+                self.change_x = 5
+                
+        if event.type == pg.KEYUP:
+            if event.key == pg.K_RIGHT:
+                self.change_x = 0
+            elif event.key == pg.K_LEFT:
+                self.change_x = 0
+          
+    def draw(self, screen):
+        pg.draw.rect(screen, (197,194,197), self.bar_rect)
+        screen.blit(self.bar_left_image, (0,self.win_y - 20))
+        screen.blit(self.bar_right_image, (self.win_x - 40,self.win_y - 20))

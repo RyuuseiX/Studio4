@@ -9,8 +9,8 @@ pg.init()
 win_x, win_y = 1280, 720
 screen = pg.display.set_mode((win_x, win_y))
 
-font_path = './font/FC Minimal Regular.ttf'
-# font_path = '/Users/Peace/Desktop/Studio4-main/project/font/FCMinimalRegular.otf'
+# font_path = './font/FC Minimal Regular.ttf'
+font_path = '/Users/Peace/Desktop/Studio4-main/project/font/FCMinimalRegular.otf'
 font_size = 30
 
 black = (0, 0, 0)
@@ -56,7 +56,7 @@ positive_box = Object.InputBox(x=image_positive.x, y=image_positive.y, w=tag_wid
 negative_box = Object.InputBox(x=image_negative.x, y=image_negative.y, w=tag_width, h=tag_height, mode='N',
                                input_font=font_path, font_size=font_size, resizable=True)
 input_box = [search_box, ask_box]
-tag_box = [manual_box, negative_box, positive_box]
+tag_box = [manual_box, positive_box, negative_box]
 for box in tag_box:
     box.rect.w = 0
 
@@ -72,6 +72,11 @@ new_disable_search = []
 
 disable_ask = []
 new_disable_ask = []
+
+vertical_scrollbar = Object.Vertical_ScrollBar(win_y+1)
+horizontal_scrollbar = Object.Horizontal_ScrollBar(win_x+1)
+expand_horizontal = False
+expand_vertical   = False
 
 run = True
 while run:
@@ -225,6 +230,10 @@ while run:
                 right_x = max(right_x, search_button_list[-1].x + search_button_list[-1].w + (2 * tag_height) + (2 * space) + image_space)
 
 
+    for box in tag_box:
+        box.update()
+        box.draw(screen)
+
     for clear in clear_list:
         clear.draw(screen)
 
@@ -276,7 +285,7 @@ while run:
                     positive_box.active = False
                     positive_box.rect.w = 0
                     img.check_w = tag_height
-                    image_negative.x = image_positive.x + tag_height + image_space
+                    image_negative.x = image_positive.x + tag_height
                     if positive_box.text != '':
                         search_box.search_q.add_pos_tag(positive_box.text)
                         positive_box.clear()
@@ -287,6 +296,11 @@ while run:
                     if negative_box.text != '':
                         search_box.search_q.add_neg_tag(negative_box.text)
                         negative_box.clear()
+
+        if expand_vertical:
+            vertical_scrollbar.event_handler(event)
+        if expand_horizontal:
+            horizontal_scrollbar.event_handler(event)
 
         for box in tag_box:
             box.handle_event(event)
@@ -303,15 +317,29 @@ while run:
             new_disable_search.append(search_button.text)
 
     if positive_box.active is True:
-        positive_box.update()
-        image_negative.x = image_positive.x + positive_box.rect.w + image_space
+        image_negative.x = image_positive.x + positive_box.rect.w
 
     for i in image_list:
         i.draw(screen)
 
-    for box in tag_box:
-        box.update()
-        box.draw(screen)
+    if bottom_y > win_y:
+        expand_vertical = True
+        vertical_scrollbar.window_height = bottom_y
+        
+    if right_x > win_x:
+        expand_horizontal = True
+        horizontal_scrollbar.window_width = right_x
+
+    if expand_vertical:
+        vertical_scrollbar.draw(screen)
+        
+    if expand_horizontal:
+        horizontal_scrollbar.draw(screen)
+
+    # print(bottom_y, right_x)
+
+    vertical_scrollbar.update()
+    horizontal_scrollbar.update()
 
     pg.time.delay(1)
     pg.display.update()
