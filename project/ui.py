@@ -42,7 +42,7 @@ image_positive = Object.Image(x=left_x, y=top_y + 50, name='positive')
 image_positive.resize(button_size)
 image_negative = Object.Image(x=left_x + button_size[0] + image_space, y=top_y + 50, name='negative')
 image_negative.resize(button_size)
-image_list = [image_title, image_manual, image_positive, image_negative]
+image_list = [image_title, image_manual, image_negative, image_positive]
 
 
 search_box = Object.InputBox(x=left_x, y=top_y, w=box_width, h=box_height, mode='S',
