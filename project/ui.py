@@ -1,6 +1,7 @@
 import pygame as pg
 import Object
 import platform
+import time
 
 pg.init()
 
@@ -35,14 +36,14 @@ image_space = 5
 button_size = (tag_height, tag_height)
 
 
-image_title = Object.Image(140, 0, '108')
+image_title = Object.Image(x=left_x-10, y=0, name='108')
 image_manual = Object.Image(x=left_x, y=top_y + 250, name='manual')
 image_manual.resize(button_size)
 image_positive = Object.Image(x=left_x, y=top_y + 50, name='positive')
 image_positive.resize(button_size)
 image_negative = Object.Image(x=left_x + button_size[0] + image_space, y=top_y + 50, name='negative')
 image_negative.resize(button_size)
-image_list = [image_title, image_manual, image_negative, image_positive]
+image_list = [image_title, image_manual, image_positive, image_negative]
 
 
 search_box = Object.InputBox(x=left_x, y=top_y, w=box_width, h=box_height, mode='S',
@@ -74,16 +75,18 @@ new_disable_search = []
 disable_ask = []
 new_disable_ask = []
 
-vertical_scrollbar = Object.Vertical_ScrollBar(win_y+1)
-horizontal_scrollbar = Object.Horizontal_ScrollBar(win_x+1)
+vertical_scrollbar = Object.Vertical_ScrollBar(win_y)
+horizontal_scrollbar = Object.Horizontal_ScrollBar(win_x)
 expand_horizontal = False
 expand_vertical   = False
+
+wide_x = 0
 
 run = True
 while run:
 
-    right_x = win_x
-    bottom_y = win_y
+    left_x = 150 + horizontal_scrollbar.x_axis
+    top_y  = 350 + vertical_scrollbar.y_axis
 
     screen.fill(white)
 
@@ -96,8 +99,19 @@ while run:
     disable_ask = new_disable_ask
     new_disable_ask = []
 
+    image_title.x = left_x - 10
+    image_title.y = top_y - 350
+    image_positive.y = top_y + 50
+    image_negative.y = top_y + 50
+    image_manual.y   = top_y + 250
+    # image_negative.x = image_positive.x + image_space + 35
+
     # input_box
     for box in input_box:
+        box.rect.x = left_x
+        search_box.rect.y = top_y
+        ask_box.rect.y = top_y + 200
+        
         box.update()
         box.draw(screen)
 
@@ -151,8 +165,10 @@ while run:
             if len(auto_tag_list) + len(manual_tag_list) == 0:
                 image_manual.x = left_x
 
-            elif len(auto_tag_list) + len(manual_tag_list) > 0:
-                right_x = max(right_x, ask_button_list[-1].x + ask_button_list[-1].w + tag_height + (2*space))
+            ask_button_wide = 200 + 100
+            for a in ask_button_list:
+                ask_button_wide += a.w
+                ask_button_wide += space
 
         elif box.mode == 'S':
             auto_tag_list = box.search_q.auto_tag
@@ -222,17 +238,24 @@ while run:
                 if i == len(auto_tag_list) + len(pos_tag_list) + len(neg_tag_list) - 1:
                     image_positive.x = search_button_list[i].x + search_button_list[i].w + space
 
-
             if len(auto_tag_list) + len(pos_tag_list) + len(neg_tag_list) == 0:
                 image_positive.x = left_x
 
+            search_button_wide = 250 + 100
+            for s in search_button_list:
+                search_button_wide += s.w
+                search_button_wide += space
+            
 
-            elif len(auto_tag_list) + len(pos_tag_list) + len(neg_tag_list) > 0:
-                right_x = max(right_x, search_button_list[-1].x + search_button_list[-1].w + (2 * tag_height) + (2 * space) + image_space)
-
-
-
+    if expand_vertical:
+        if time.time() - vertical_scrollbar.scrollTimeStamp >= 0.05 and vertical_scrollbar.scroll == 1:
+            vertical_scrollbar.scroll = 0
+            vertical_scrollbar.change_y = 0
+    
     for clear in clear_list:
+        clear.x = left_x + box_width
+        clear_search.y = top_y
+        clear_ask.y = top_y+200
         clear.draw(screen)
 
     for event in pg.event.get():
@@ -252,10 +275,12 @@ while run:
 
         for img in image_list:
             img.handle_event(event)
+
             if 'fill' in img.name:
                 if 'manual' in img.name:
                     manual_box.active = True
                     manual_box.rect.x = img.x
+                    manual_box.rect.y = img.y
                     manual_box.rect.w = manual_box.w
                     img.check_w = manual_box.rect.w
 
@@ -263,12 +288,14 @@ while run:
                     positive_box.active = True
                     positive_box.rect.w = positive_box.w
                     positive_box.rect.x = img.x
+                    positive_box.rect.y = img.y
                     img.check_w = positive_box.rect.w
 
                 elif 'negative' in img.name:
                     negative_box.active = True
                     negative_box.rect.w = negative_box.w
                     negative_box.rect.x = img.x
+                    negative_box.rect.y = img.y
                     img.check_w = negative_box.rect.w
 
             elif 'fill' not in img.name:
@@ -325,6 +352,12 @@ while run:
         box.update()
         box.draw(screen)
 
+    right_x = max( win_x, max(search_button_wide, ask_button_wide)  )
+    bottom_y = win_y + 543
+
+    vertical_scrollbar.update()
+    horizontal_scrollbar.update()
+
     if bottom_y > win_y:
         expand_vertical = True
         vertical_scrollbar.window_height = bottom_y
@@ -338,11 +371,6 @@ while run:
 
     if expand_horizontal:
         horizontal_scrollbar.draw(screen)
-
-    # print(bottom_y, right_x)
-
-    vertical_scrollbar.update()
-    horizontal_scrollbar.update()
 
     pg.time.delay(1)
     pg.display.update()

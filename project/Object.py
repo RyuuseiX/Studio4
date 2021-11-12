@@ -65,10 +65,11 @@ class Auto_Tag_Button(Rec):
     def handle_event(self, event):
         if event.type == pg.MOUSEBUTTONDOWN:
             if self.mouse_on():
-                if self.status:
-                    self.status = False
-                elif not self.status:
-                    self.status = True
+                if event.button != 4 and event.button != 5:
+                    if self.status:
+                        self.status = False
+                    elif not self.status:
+                        self.status = True
 
 
 class Clear_Button(Rec):
@@ -88,14 +89,15 @@ class Clear_Button(Rec):
     def handle_event(self, event):
         if event.type == pg.MOUSEBUTTONDOWN:
             if self.mouse_on():
-                self.input_box.clear()
-                if self.input_box.mode == 'A':
-                    self.input_box.ask_q.add_text(self.input_box.text)
-                    Auto_Tag.auto_tag(self.input_box.ask_q)
+                if event.button != 4 and event.button != 5:
+                    self.input_box.clear()
+                    if self.input_box.mode == 'A':
+                        self.input_box.ask_q.add_text(self.input_box.text)
+                        Auto_Tag.auto_tag(self.input_box.ask_q)
 
-                elif self.input_box.mode == 'S':
-                    self.input_box.search_q.add_text(self.input_box.text)
-                    Auto_Tag.auto_tag(self.input_box.search_q)
+                    elif self.input_box.mode == 'S':
+                        self.input_box.search_q.add_text(self.input_box.text)
+                        Auto_Tag.auto_tag(self.input_box.search_q)
 
 
 class InputBox:
@@ -130,15 +132,16 @@ class InputBox:
 
     def handle_event(self, event):
         if event.type == pg.MOUSEBUTTONDOWN:  # ทำการเช็คว่ามีการคลิก Mouse หรือไม่
-            if self.mode in self.as_list:
-                if self.rect.collidepoint(event.pos):  # ทำการเช็คว่าตำแหน่งของ Mouse อยู่บน InputBox นี้หรือไม่
-                    # Toggle the active variable.
-                    if self.mode in self.as_list:
-                        self.active = not self.active
-                else:
-                    self.active = False
+            if event.button != 4 and event.button != 5:
+                if self.mode in self.as_list:
+                    if self.rect.collidepoint(event.pos):  # ทำการเช็คว่าตำแหน่งของ Mouse อยู่บน InputBox นี้หรือไม่
+                        # Toggle the active variable.
+                        if self.mode in self.as_list:
+                            self.active = not self.active
+                    else:
+                        self.active = False
 
-                self.color = self.active_color if self.active else self.inactive_color  # เปลี่ยนสีของ InputBox
+                    self.color = self.active_color if self.active else self.inactive_color  # เปลี่ยนสีของ InputBox
 
         if event.type == pg.KEYDOWN:
             tone_list = ['่', '้', '๊', '๋', '์']
@@ -232,17 +235,19 @@ class Image:
 
     def handle_event(self, event):
         if event.type == pg.MOUSEBUTTONDOWN:
-            if self.mouse_on():
-                if 'fill' not in self.name:
-                    self.name += ' fill'
-                    self.img = self.load()
-                    self.resize((self.w, self.h))
+            if event.button != 4 and event.button != 5:
+                if 'positive' in self.name or 'negative' in self.name or 'manual' in self.name:
+                    if self.mouse_on():
+                        if 'fill' not in self.name:
+                            self.name += ' fill'
+                            self.img = self.load()
+                            self.resize((self.w, self.h))
 
-            elif not self.mouse_on():
-                if 'fill' in self.name:
-                    self.name = self.name.replace(' fill', '')
-                    self.img = self.load()
-                    self.resize((self.w, self.h))
+                    elif not self.mouse_on():
+                        if 'fill' in self.name:
+                            self.name = self.name.replace(' fill', '')
+                            self.img = self.load()
+                            self.resize((self.w, self.h))
 
 
 class Vertical_ScrollBar(object):
@@ -297,7 +302,10 @@ class Vertical_ScrollBar(object):
 
             self.y_axis = int(height_diff / (scroll_length * 1.0) * (self.bar_rect.centery - bar_half_length) * -1)
         else:
-            self.bar_rect.centery = scroll_length / (height_diff * 1.0) * (self.y_axis * -1) + bar_half_length
+            if height_diff != 0:
+                self.bar_rect.centery = scroll_length / (height_diff * 1.0) * (self.y_axis * -1) + bar_half_length
+            else:
+                self.bar_rect.centery = scroll_length * (self.y_axis * -1) + bar_half_length
 
     def handle_event(self, event):
         if event.type == pg.MOUSEBUTTONDOWN:
@@ -327,9 +335,9 @@ class Vertical_ScrollBar(object):
 
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_UP:
-                self.change_y = 10
+                self.change_y = 5
             elif event.key == pg.K_DOWN:
-                self.change_y = -10
+                self.change_y = -5
 
         if event.type == pg.KEYUP:
             if event.key == pg.K_UP:
@@ -390,10 +398,12 @@ class Horizontal_ScrollBar(object):
                 self.bar_rect.left = 20
             elif self.bar_rect.right > (self.win_x - 40):
                 self.bar_rect.right = self.win_x - 40
-
             self.x_axis = int(width_diff / (scroll_length * 1.0) * (self.bar_rect.centerx - bar_half_height) * -1)
         else:
-            self.bar_rect.centerx = scroll_length / (width_diff * 1.0) * (self.x_axis * -1) + bar_half_height
+            if width_diff != 0:
+                self.bar_rect.centerx = scroll_length / (width_diff * 1.0) * (self.x_axis * -1) + bar_half_height
+            else:
+                self.bar_rect.centerx = scroll_length * (self.x_axis * -1) + bar_half_height
 
     def handle_event(self, event):
         if event.type == pg.MOUSEBUTTONDOWN:
