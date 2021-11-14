@@ -100,6 +100,36 @@ class Clear_Button(Rec):
                         Auto_Tag.auto_tag(self.input_box.search_q)
 
 
+class Clear_Button(Rec):
+    def __init__(self, x, y, w, h, input_box, font=None, color=(0, 200, 200), text=''):
+        self.font = font
+        self.input_box = input_box
+        Rec.__init__(self, x, y, w, h, font, color, text)
+
+    def mouse_on(self):
+        (pos_x, pos_y) = pg.mouse.get_pos()
+        if self.x <= pos_x <= self.x + self.w and self.y <= pos_y <= self.y + self.h:
+            is_mouse_on = True
+        else:
+            is_mouse_on = False
+        return is_mouse_on
+
+    def handle_event(self, event):
+        if event.type == pg.MOUSEBUTTONDOWN:
+            if self.mouse_on():
+                if event.button != 4 and event.button != 5:
+                    self.input_box.clear()
+                    if self.input_box.mode == 'A':
+                        self.input_box.ask_q.add_text(self.input_box.text)
+                        Auto_Tag.auto_tag(self.input_box.ask_q)
+                        self.input_box.ask_q.del_manual_tag('!CLEAR_ALL!')
+                    elif self.input_box.mode == 'S':
+                        self.input_box.search_q.add_text(self.input_box.text)
+                        Auto_Tag.auto_tag(self.input_box.search_q)
+                        self.input_box.search_q.del_pos_tag('!CLEAR_ALL!')
+                        self.input_box.search_q.del_neg_tag('!CLEAR_ALL!')
+
+
 class InputBox:
     def __init__(self, x, y, w, h, mode, text='', input_font=None, font_size=32, resizable=False):
         self.rect = pg.Rect(x, y, w, h)

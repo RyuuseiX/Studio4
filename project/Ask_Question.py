@@ -41,7 +41,10 @@ class Ask_Question:
             for tag in tag_list:
                 self.auto_tag.remove(tag)
         elif isinstance(tag_list, str):
-            self.auto_tag.remove(tag_list)
+            if tag_list == '!CLEAR_ALL!':
+                self.auto_tag = []
+            else:
+                self.auto_tag.remove(tag_list)
 
     def add_spec_tag(self, tag_list):
         if isinstance(tag_list, list):
@@ -57,7 +60,10 @@ class Ask_Question:
             for tag in tag_list:
                 self.spec_tag.remove(tag)
         elif isinstance(tag_list, str):
-            self.spec_tag.remove(tag_list)
+            if tag_list == '!CLEAR_ALL!':
+                self.spec_tag = []
+            else:
+                self.spec_tag.remove(tag_list)
 
     def add_manual_tag(self, tag_list):
         if isinstance(tag_list, list):
@@ -73,7 +79,10 @@ class Ask_Question:
             for tag in tag_list:
                 self.manual_tag.remove(tag)
         elif isinstance(tag_list, str):
-            self.manual_tag.remove(tag_list)
+            if tag_list == '!CLEAR_ALL!':
+                self.manual_tag = []
+            else:
+                self.manual_tag.remove(tag_list)
 
 
 def remove_duplicate(lis):
