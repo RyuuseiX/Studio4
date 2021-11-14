@@ -142,6 +142,9 @@ while run:
                     image_manual.x = ask_button_list[i].x + ask_button_list[i].w + space
 
             manual_tag_list = box.ask_q.manual_tag
+            for tag in manual_tag_list:
+                if tag in disable_ask:
+                    manual_tag_list.remove(tag)
             for i in range(len(auto_tag_list), len(auto_tag_list) + len(manual_tag_list)):
                 if i > 0:
                     ask_button = Object.Auto_Tag_Button(
@@ -151,10 +154,6 @@ while run:
                     ask_button = Object.Auto_Tag_Button(
                         x=left_x, y=tag_y, w=15 * (len(manual_tag_list[i])),
                         h=tag_height, font=font_path, text=manual_tag_list[i])
-
-                if ask_button.text in disable_ask:
-                    ask_button.status = False
-                    ask_button.color = light_gray
 
                 ask_button_list.append(ask_button)
                 ask_button.draw(screen)
@@ -197,6 +196,9 @@ while run:
                     image_positive.x = search_button_list[i].x + search_button_list[i].w + space
 
             pos_tag_list = box.search_q.pos_tag
+            for tag in pos_tag_list:
+                if tag in disable_search:
+                    pos_tag_list.remove(tag)
             for i in range(len(auto_tag_list), len(auto_tag_list) + len(pos_tag_list)):
                 if i > 0:
                     search_button = Object.Auto_Tag_Button(
@@ -207,10 +209,6 @@ while run:
                         x=left_x, y=tag_y, w=15 * (len(pos_tag_list[i])),
                         h=35, font=font_path, text=pos_tag_list[i])
 
-                if search_button.text in disable_search:
-                    search_button.status = False
-                    search_button.color = light_gray
-
                 search_button_list.append(search_button)
                 search_button.draw(screen)
 
@@ -218,6 +216,9 @@ while run:
                     image_positive.x = search_button_list[i].x + search_button_list[i].w + space
 
             neg_tag_list = box.search_q.neg_tag
+            for tag in neg_tag_list:
+                if tag in disable_search:
+                    neg_tag_list.remove(tag)
             for i in range(len(auto_tag_list) + len(pos_tag_list), len(auto_tag_list) + len(pos_tag_list) + len(neg_tag_list)):
                 if i > 0:
                     search_button = Object.Auto_Tag_Button(
@@ -227,10 +228,6 @@ while run:
                     search_button = Object.Auto_Tag_Button(
                         x=left_x, y=tag_y, w=15 * (len(neg_tag_list[i])),
                         h=35, font=font_path, color=(255, 111, 136), text=neg_tag_list[i])
-
-                if search_button.text in disable_search:
-                    search_button.status = False
-                    search_button.color = light_gray
 
                 search_button_list.append(search_button)
                 search_button.draw(screen)

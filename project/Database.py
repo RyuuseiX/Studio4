@@ -1,8 +1,8 @@
 import pandas as pd
 import openpyxl
-
 import string
 import random
+
 
 def database_create(path):
     head = ['Question']
@@ -10,6 +10,7 @@ def database_create(path):
         head.append('Tag_'+str(i))
     df = pd.DataFrame(index=None, columns=head)
     df.to_excel(path, sheet_name='Database', index=None)
+
 
 def database_update(path, dataList):
     book = openpyxl.load_workbook(path)
@@ -21,11 +22,12 @@ def database_update(path, dataList):
         df.to_excel(writer, sheet_name='Database', startrow=writer.sheets[sheetname].max_row, index=False, header=False)
     writer.save()
 
+
 def database_query(path, positive_key_list, negative_key_list):
     df = pd.read_excel(path, sheet_name='Database', keep_default_na= False, na_values=[""])
     print(df)
 
-    #Positive
+    # Positive
     for i in range(len(df)):
         tag_exist = 0 
         for p in positive_key_list:
@@ -34,12 +36,12 @@ def database_query(path, positive_key_list, negative_key_list):
         if tag_exist != len(positive_key_list):
             df = df.drop(i)
 
-    #Negative 
+    # Negative
     for n in negative_key_list:
         for c in list(df.columns)[1:]:
             df = df.drop(df[df[c] == n].index)
     
-    #Search Results
+    # Search Results
     df = df.reset_index(drop=True)
     search_question_list = []
     search_tag_list = []
