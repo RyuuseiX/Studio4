@@ -358,10 +358,16 @@ while run:
     if bottom_y > win_y:
         expand_vertical = True
         vertical_scrollbar.window_height = bottom_y
+    else:
+        vertical_scrollbar.y_axis = 0
+        expand_vertical = False
 
     if right_x > win_x:
         expand_horizontal = True
         horizontal_scrollbar.window_width = right_x
+    else:
+        horizontal_scrollbar.x_axis = 0
+        expand_horizontal = False
 
     if expand_vertical:
         vertical_scrollbar.draw(screen)
