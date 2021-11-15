@@ -2,6 +2,7 @@ import pygame as pg
 import Ask_Question
 import Search_Question
 import Auto_Tag
+import Database
 import time
 import platform
 
@@ -128,6 +129,34 @@ class Clear_Button(Rec):
                         Auto_Tag.auto_tag(self.input_box.search_q)
                         self.input_box.search_q.del_pos_tag('!CLEAR_ALL!')
                         self.input_box.search_q.del_neg_tag('!CLEAR_ALL!')
+
+
+
+
+
+class Write_Question_Button(Rec):
+    def __init__(self, x, y, w, h, input_box, db, font=None, color=(200, 0, 0), text=''):
+        self.font = font
+        self.input_box = input_box
+        Rec.__init__(self, x, y, w, h, font, color, text)
+        self.database = db
+
+    def mouse_on(self):
+        (pos_x, pos_y) = pg.mouse.get_pos()
+        if self.x <= pos_x <= self.x + self.w and self.y <= pos_y <= self.y + self.h:
+            is_mouse_on = True
+        else:
+            is_mouse_on = False
+        return is_mouse_on
+
+    def handle_event(self, event):
+        if event.type == pg.MOUSEBUTTONDOWN:
+            if self.mouse_on():
+                if event.button != 4 and event.button != 5:
+                    self.database.test()
+
+
+
 
 
 class InputBox:

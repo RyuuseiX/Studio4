@@ -1,5 +1,6 @@
 import pygame as pg
 import Object
+import Database
 import platform
 import time
 
@@ -66,6 +67,9 @@ clear_search = Object.Clear_Button(x=left_x + box_width, y=top_y, w=100, h=box_h
 clear_ask = Object.Clear_Button(x=left_x + box_width, y=top_y+200, w=100, h=box_height, input_box=ask_box, text='Clear')
 clear_list = [clear_search, clear_ask]
 
+excel_database = Database.Excel_Database() 
+write_question = Object.Write_Question_Button(x=left_x + box_width + 100, y=top_y+200, w=100, h=box_height, input_box=ask_box, db=excel_database, text='Submit')
+
 search_txt = Object.Text(screen, 'Find Question', input_font=font_path, font_size=font_size)
 ask_txt = Object.Text(screen, 'New Question', input_font=font_path, font_size=font_size)
 
@@ -104,6 +108,8 @@ while run:
     image_positive.y = top_y + 50
     image_negative.y = top_y + 50
     image_manual.y   = top_y + 250
+    write_question.x = left_x + box_width + 100
+    write_question.y = top_y + 200
     # image_negative.x = image_positive.x + image_space + 35
 
     # input_box
@@ -255,6 +261,8 @@ while run:
         clear_ask.y = top_y+200
         clear.draw(screen)
 
+    write_question.draw(screen)
+
     for event in pg.event.get():
         for box in input_box:
             box.handle_event(event)
@@ -269,6 +277,8 @@ while run:
 
         for clear in clear_list:
             clear.handle_event(event)
+
+        write_question.handle_event(event)
 
         for img in image_list:
             img.handle_event(event)
