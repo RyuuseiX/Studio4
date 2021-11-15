@@ -66,7 +66,7 @@ class Auto_Tag_Button(Rec):
     def handle_event(self, event):
         if event.type == pg.MOUSEBUTTONDOWN:
             if self.mouse_on():
-                if event.button != 4 and event.button != 5:
+                if event.button == 1:
                     if self.status:
                         self.status = False
                     elif not self.status:
@@ -90,7 +90,7 @@ class Clear_Button(Rec):
     def handle_event(self, event):
         if event.type == pg.MOUSEBUTTONDOWN:
             if self.mouse_on():
-                if event.button != 4 and event.button != 5:
+                if event.button == 1:
                     self.input_box.clear()
                     if self.input_box.mode == 'A':
                         self.input_box.ask_q.add_text(self.input_box.text)
@@ -118,7 +118,7 @@ class Clear_Button(Rec):
     def handle_event(self, event):
         if event.type == pg.MOUSEBUTTONDOWN:
             if self.mouse_on():
-                if event.button != 4 and event.button != 5:
+                if event.button == 1:
                     self.input_box.clear()
                     if self.input_box.mode == 'A':
                         self.input_box.ask_q.add_text(self.input_box.text)
@@ -152,7 +152,7 @@ class Write_Question_Button(Rec):
     def handle_event(self, event):
         if event.type == pg.MOUSEBUTTONDOWN:
             if self.mouse_on():
-                if event.button != 4 and event.button != 5:
+                if event.button == 1:
                     self.database.test()
 
 
@@ -191,7 +191,7 @@ class InputBox:
 
     def handle_event(self, event):
         if event.type == pg.MOUSEBUTTONDOWN:  # ทำการเช็คว่ามีการคลิก Mouse หรือไม่
-            if event.button != 4 and event.button != 5:
+            if event.button == 1:
                 if self.mode in self.as_list:
                     if self.rect.collidepoint(event.pos):  # ทำการเช็คว่าตำแหน่งของ Mouse อยู่บน InputBox นี้หรือไม่
                         # Toggle the active variable.
@@ -294,7 +294,7 @@ class Image:
 
     def handle_event(self, event):
         if event.type == pg.MOUSEBUTTONDOWN:
-            if event.button != 4 and event.button != 5:
+            if event.button == 1:
                 if 'positive' in self.name or 'negative' in self.name or 'manual' in self.name:
                     if self.mouse_on():
                         if 'fill' not in self.name:

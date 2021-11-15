@@ -84,8 +84,6 @@ horizontal_scrollbar = Object.Horizontal_ScrollBar(win_x)
 expand_horizontal = False
 expand_vertical   = False
 
-wide_x = 0
-
 run = True
 while run:
 
@@ -110,7 +108,6 @@ while run:
     image_manual.y   = top_y + 250
     write_question.x = left_x + box_width + 100
     write_question.y = top_y + 200
-    # image_negative.x = image_positive.x + image_space + 35
 
     # input_box
     for box in input_box:
@@ -263,6 +260,49 @@ while run:
 
     write_question.draw(screen)
 
+    for img in image_list:
+        if 'fill' in img.name:
+            if 'manual' in img.name:
+                manual_box.active = True
+                manual_box.rect.x = img.x
+                manual_box.rect.y = img.y
+                manual_box.rect.w = manual_box.w
+                img.check_w = manual_box.rect.w
+            elif 'positive' in img.name:
+                positive_box.active = True
+                positive_box.rect.w = positive_box.w
+                positive_box.rect.x = img.x
+                positive_box.rect.y = img.y
+                img.check_w = positive_box.rect.w
+            elif 'negative' in img.name:
+                negative_box.active = True
+                negative_box.rect.w = negative_box.w
+                negative_box.rect.x = img.x
+                negative_box.rect.y = img.y
+                img.check_w = negative_box.rect.w
+
+        elif 'fill' not in img.name:
+            if 'manual' in img.name:
+                manual_box.active = False
+                img.check_w = tag_height
+                if manual_box.text != '':
+                    ask_box.ask_q.add_manual_tag(manual_box.text)
+                    manual_box.clear()
+            elif 'positive' in img.name:
+                positive_box.active = False
+                positive_box.rect.w = 0
+                img.check_w = tag_height
+                image_negative.x = image_positive.x + tag_height + image_space
+                if positive_box.text != '':
+                    search_box.search_q.add_pos_tag(positive_box.text)
+                    positive_box.clear()
+            elif 'negative' in img.name:
+                negative_box.active = False
+                img.check_w = tag_height
+                if negative_box.text != '':
+                    search_box.search_q.add_neg_tag(negative_box.text)
+                    negative_box.clear()
+
     for event in pg.event.get():
         for box in input_box:
             box.handle_event(event)
@@ -282,52 +322,6 @@ while run:
 
         for img in image_list:
             img.handle_event(event)
-
-            if 'fill' in img.name:
-                if 'manual' in img.name:
-                    manual_box.active = True
-                    manual_box.rect.x = img.x
-                    manual_box.rect.y = img.y
-                    manual_box.rect.w = manual_box.w
-                    img.check_w = manual_box.rect.w
-
-                elif 'positive' in img.name:
-                    positive_box.active = True
-                    positive_box.rect.w = positive_box.w
-                    positive_box.rect.x = img.x
-                    positive_box.rect.y = img.y
-                    img.check_w = positive_box.rect.w
-
-                elif 'negative' in img.name:
-                    negative_box.active = True
-                    negative_box.rect.w = negative_box.w
-                    negative_box.rect.x = img.x
-                    negative_box.rect.y = img.y
-                    img.check_w = negative_box.rect.w
-
-            elif 'fill' not in img.name:
-                if 'manual' in img.name:
-                    manual_box.active = False
-                    img.check_w = tag_height
-                    if manual_box.text != '':
-                        ask_box.ask_q.add_manual_tag(manual_box.text)
-                        manual_box.clear()
-
-                elif 'positive' in img.name:
-                    positive_box.active = False
-                    positive_box.rect.w = 0
-                    img.check_w = tag_height
-                    image_negative.x = image_positive.x + tag_height + image_space
-                    if positive_box.text != '':
-                        search_box.search_q.add_pos_tag(positive_box.text)
-                        positive_box.clear()
-
-                elif 'negative' in img.name:
-                    negative_box.active = False
-                    img.check_w = tag_height
-                    if negative_box.text != '':
-                        search_box.search_q.add_neg_tag(negative_box.text)
-                        negative_box.clear()
 
         if expand_vertical:
             vertical_scrollbar.handle_event(event)
@@ -359,7 +353,8 @@ while run:
         box.update()
         box.draw(screen)
 
-    right_x = max( win_x, max(search_button_wide, ask_button_wide)  )
+    # right_x = max( win_x, max(search_button_wide, ask_button_wide)  )
+    right_x  = win_x + 543
     bottom_y = win_y + 543
 
     vertical_scrollbar.update()
