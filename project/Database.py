@@ -4,6 +4,7 @@ import string
 import random
 import platform
 
+
 class Excel_Database:
     def __init__(self):
         os = platform.platform()[0].upper()
@@ -14,24 +15,24 @@ class Excel_Database:
 
     def database_create(self):
         head = ['Question']
-        for i in range(1,21):
+        for i in range(1, 21):
             head.append('Tag_'+str(i))
         df = pd.DataFrame(index=None, columns=head)
         df.to_excel(self.excel_path, sheet_name='Database', index=None)
 
-    def database_update(self, dataList):
+    def database_update(self, data_list):
         book = openpyxl.load_workbook(self.excel_path)
         writer = pd.ExcelWriter(self.excel_path, engine='openpyxl')
         writer.book = book
-        df = pd.DataFrame([dataList],index=None, columns=None)
+        df = pd.DataFrame([data_list], index=None, columns=None)
         writer.sheets = {ws.title: ws for ws in book.worksheets}
-        for sheetname in writer.sheets:
-            df.to_excel(writer, sheet_name='Database', startrow=writer.sheets[sheetname].max_row, index=False, header=False)
+        for sheet_name in writer.sheets:
+            df.to_excel(writer, sheet_name='Database', startrow=writer.sheets[sheet_name].max_row, index=False, header=False)
         writer.save()
 
 
     def database_query(self, positive_key_list, negative_key_list):
-        df = pd.read_excel(self.excel_path, sheet_name='Database', keep_default_na= False, na_values=[""])
+        df = pd.read_excel(self.excel_path, sheet_name='Database', keep_default_na=False, na_values=[""])
         print(df)
 
         # Positive
@@ -73,7 +74,7 @@ class Excel_Database:
         data_list = list(set(data_list))
         self.database_update(data_list)
         # print("PASS !!!")
-        self.database_query([],[])
+        self.database_query([], [])
 
 
 
@@ -99,7 +100,7 @@ if __name__ == '__main__':
 
     password = input("Type the Authentication Code: ") #confirm
 
-    if password == 'confirm':
+    if password == 'confirm' or password == 'C':
         '''Create (used ONCE when start a new file)'''
         db = Excel_Database()
         db.database_create()

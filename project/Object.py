@@ -49,7 +49,7 @@ class Rec(Text):
             text_on_button.write_c(self.x + self.w / 2, self.y + self.h / 2)
 
 
-class Auto_Tag_Button(Rec):
+class Tag_Button(Rec):
     def __init__(self, x, y, w, h, font=None, color=(112, 173, 71), text=''):
         self.font = font
         self.status = True
@@ -101,40 +101,7 @@ class Clear_Button(Rec):
                         Auto_Tag.auto_tag(self.input_box.search_q)
 
 
-class Clear_Button(Rec):
-    def __init__(self, x, y, w, h, input_box, font=None, color=(0, 200, 200), text=''):
-        self.font = font
-        self.input_box = input_box
-        Rec.__init__(self, x, y, w, h, font, color, text)
-
-    def mouse_on(self):
-        (pos_x, pos_y) = pg.mouse.get_pos()
-        if self.x <= pos_x <= self.x + self.w and self.y <= pos_y <= self.y + self.h:
-            is_mouse_on = True
-        else:
-            is_mouse_on = False
-        return is_mouse_on
-
-    def handle_event(self, event):
-        if event.type == pg.MOUSEBUTTONDOWN:
-            if self.mouse_on():
-                if event.button == 1:
-                    self.input_box.clear()
-                    if self.input_box.mode == 'A':
-                        self.input_box.ask_q.add_text(self.input_box.text)
-                        Auto_Tag.auto_tag(self.input_box.ask_q)
-                        self.input_box.ask_q.del_manual_tag('!CLEAR_ALL!')
-                    elif self.input_box.mode == 'S':
-                        self.input_box.search_q.add_text(self.input_box.text)
-                        Auto_Tag.auto_tag(self.input_box.search_q)
-                        self.input_box.search_q.del_pos_tag('!CLEAR_ALL!')
-                        self.input_box.search_q.del_neg_tag('!CLEAR_ALL!')
-
-
-
-
-
-class Write_Question_Button(Rec):
+class Submit_Button(Rec):
     def __init__(self, x, y, w, h, input_box, db, font=None, color=(200, 0, 0), text=''):
         self.font = font
         self.input_box = input_box
@@ -154,9 +121,6 @@ class Write_Question_Button(Rec):
             if self.mouse_on():
                 if event.button == 1:
                     self.database.test()
-
-
-
 
 
 class InputBox:

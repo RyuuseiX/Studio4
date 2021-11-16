@@ -68,7 +68,7 @@ clear_ask = Object.Clear_Button(x=left_x + box_width, y=top_y+200, w=100, h=box_
 clear_list = [clear_search, clear_ask]
 
 excel_database = Database.Excel_Database() 
-write_question = Object.Write_Question_Button(x=left_x + box_width + 100, y=top_y+200, w=100, h=box_height, input_box=ask_box, db=excel_database, text='Submit')
+write_question = Object.Submit_Button(x=left_x + box_width + 100, y=top_y + 200, w=100, h=box_height, input_box=ask_box, db=excel_database, text='Submit')
 
 search_txt = Object.Text(screen, 'Find Question', input_font=font_path, font_size=font_size)
 ask_txt = Object.Text(screen, 'New Question', input_font=font_path, font_size=font_size)
@@ -82,7 +82,7 @@ new_disable_ask = []
 vertical_scrollbar = Object.Vertical_ScrollBar(win_y)
 horizontal_scrollbar = Object.Horizontal_ScrollBar(win_x)
 expand_horizontal = False
-expand_vertical   = False
+expand_vertical = False
 
 run = True
 while run:
@@ -126,11 +126,11 @@ while run:
 
             for i in range(len(auto_tag_list)):
                 if i > 0:
-                    ask_button = Object.Auto_Tag_Button(
+                    ask_button = Object.Tag_Button(
                         x=ask_button_list[i - 1].x + ask_button_list[i - 1].w + space, y=tag_y, w=15 * (len(auto_tag_list[i])),
                         h=tag_height, font=font_path, text=auto_tag_list[i])
                 elif i == 0:
-                    ask_button = Object.Auto_Tag_Button(
+                    ask_button = Object.Tag_Button(
                         x=left_x, y=tag_y, w=15 * (len(auto_tag_list[i])),
                         h=tag_height, font=font_path, text=auto_tag_list[i])
 
@@ -150,11 +150,11 @@ while run:
                     manual_tag_list.remove(tag)
             for i in range(len(auto_tag_list), len(auto_tag_list) + len(manual_tag_list)):
                 if i > 0:
-                    ask_button = Object.Auto_Tag_Button(
+                    ask_button = Object.Tag_Button(
                         x=ask_button_list[i - 1].x + ask_button_list[i - 1].w + space, y=tag_y, w=15 * (len(manual_tag_list[i-len(auto_tag_list)])),
                         h=tag_height, font=font_path, text=manual_tag_list[i-len(auto_tag_list)])
                 elif i == 0:
-                    ask_button = Object.Auto_Tag_Button(
+                    ask_button = Object.Tag_Button(
                         x=left_x, y=tag_y, w=15 * (len(manual_tag_list[i])),
                         h=tag_height, font=font_path, text=manual_tag_list[i])
 
@@ -180,11 +180,11 @@ while run:
 
             for i in range(len(auto_tag_list)):
                 if i > 0:
-                    search_button = Object.Auto_Tag_Button(
+                    search_button = Object.Tag_Button(
                         x=search_button_list[i - 1].x + search_button_list[i - 1].w + space, y=tag_y, w=15 * (len(auto_tag_list[i])),
                         h=35, font=font_path, text=auto_tag_list[i])
                 elif i == 0:
-                    search_button = Object.Auto_Tag_Button(
+                    search_button = Object.Tag_Button(
                         x=left_x, y=tag_y, w=15 * (len(auto_tag_list[i])),
                         h=35, font=font_path, text=auto_tag_list[i])
 
@@ -204,11 +204,11 @@ while run:
                     pos_tag_list.remove(tag)
             for i in range(len(auto_tag_list), len(auto_tag_list) + len(pos_tag_list)):
                 if i > 0:
-                    search_button = Object.Auto_Tag_Button(
+                    search_button = Object.Tag_Button(
                         x=search_button_list[i - 1].x + search_button_list[i - 1].w + space, y=tag_y, w=15 * (len(pos_tag_list[i - len(auto_tag_list)])),
                         h=35, font=font_path, text=pos_tag_list[i - len(auto_tag_list)])
                 elif i == 0:
-                    search_button = Object.Auto_Tag_Button(
+                    search_button = Object.Tag_Button(
                         x=left_x, y=tag_y, w=15 * (len(pos_tag_list[i])),
                         h=35, font=font_path, text=pos_tag_list[i])
 
@@ -224,11 +224,11 @@ while run:
                     neg_tag_list.remove(tag)
             for i in range(len(auto_tag_list) + len(pos_tag_list), len(auto_tag_list) + len(pos_tag_list) + len(neg_tag_list)):
                 if i > 0:
-                    search_button = Object.Auto_Tag_Button(
+                    search_button = Object.Tag_Button(
                         x=search_button_list[i - 1].x + search_button_list[i - 1].w + space, y=tag_y, w=15 * (len(neg_tag_list[i - len(auto_tag_list) - len(pos_tag_list)])),
                         h=35, font=font_path, color=(255, 111, 136), text=neg_tag_list[i - len(auto_tag_list) - len(pos_tag_list)])
                 elif i == 0:
-                    search_button = Object.Auto_Tag_Button(
+                    search_button = Object.Tag_Button(
                         x=left_x, y=tag_y, w=15 * (len(neg_tag_list[i])),
                         h=35, font=font_path, color=(255, 111, 136), text=neg_tag_list[i])
 

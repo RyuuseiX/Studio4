@@ -103,11 +103,11 @@ while run:
 
             for i in range(len(auto_tag_list)):
                 if i > 0:
-                    ask_button = Object.Auto_Tag_Button(
+                    ask_button = Object.Tag_Button(
                         x=ask_button_list[i - 1].x + ask_button_list[i - 1].w + space, y=tag_y, w=15 * (len(auto_tag_list[i])),
                         h=tag_height, font=font_path, text=auto_tag_list[i])
                 elif i == 0:
-                    ask_button = Object.Auto_Tag_Button(
+                    ask_button = Object.Tag_Button(
                         x=left_x, y=tag_y, w=15 * (len(auto_tag_list[i])),
                         h=tag_height, font=font_path, text=auto_tag_list[i])
 
@@ -124,11 +124,11 @@ while run:
             manual_tag_list = box.ask_q.manual_tag
             for i in range(len(auto_tag_list), len(auto_tag_list) + len(manual_tag_list)):
                 if i > 0:
-                    ask_button = Object.Auto_Tag_Button(
+                    ask_button = Object.Tag_Button(
                         x=ask_button_list[i - 1].x + ask_button_list[i - 1].w + space, y=tag_y, w=15 * (len(manual_tag_list[i-len(auto_tag_list)])),
                         h=tag_height, font=font_path, text=manual_tag_list[i-len(auto_tag_list)])
                 elif i == 0:
-                    ask_button = Object.Auto_Tag_Button(
+                    ask_button = Object.Tag_Button(
                         x=left_x, y=tag_y, w=15 * (len(manual_tag_list[i])),
                         h=tag_height, font=font_path, text=manual_tag_list[i])
 
@@ -156,11 +156,11 @@ while run:
 
             for i in range(len(auto_tag_list)):
                 if i > 0:
-                    search_button = Object.Auto_Tag_Button(
+                    search_button = Object.Tag_Button(
                         x=search_button_list[i - 1].x + search_button_list[i - 1].w + space, y=tag_y, w=15 * (len(auto_tag_list[i])),
                         h=35, font=font_path, text=auto_tag_list[i])
                 elif i == 0:
-                    search_button = Object.Auto_Tag_Button(
+                    search_button = Object.Tag_Button(
                         x=left_x, y=tag_y, w=15 * (len(auto_tag_list[i])),
                         h=35, font=font_path, text=auto_tag_list[i])
 
@@ -177,11 +177,11 @@ while run:
             pos_tag_list = box.search_q.pos_tag
             for i in range(len(auto_tag_list), len(auto_tag_list) + len(pos_tag_list)):
                 if i > 0:
-                    search_button = Object.Auto_Tag_Button(
+                    search_button = Object.Tag_Button(
                         x=search_button_list[i - 1].x + search_button_list[i - 1].w + space, y=tag_y, w=15 * (len(pos_tag_list[i - len(auto_tag_list)])),
                         h=35, font=font_path, text=pos_tag_list[i - len(auto_tag_list)])
                 elif i == 0:
-                    search_button = Object.Auto_Tag_Button(
+                    search_button = Object.Tag_Button(
                         x=left_x, y=tag_y, w=15 * (len(pos_tag_list[i])),
                         h=35, font=font_path, text=pos_tag_list[i])
 
@@ -198,11 +198,11 @@ while run:
             neg_tag_list = box.search_q.neg_tag
             for i in range(len(auto_tag_list) + len(pos_tag_list), len(auto_tag_list) + len(pos_tag_list) + len(neg_tag_list)):
                 if i > 0:
-                    search_button = Object.Auto_Tag_Button(
+                    search_button = Object.Tag_Button(
                         x=search_button_list[i - 1].x + search_button_list[i - 1].w + space, y=tag_y, w=15 * (len(neg_tag_list[i - len(auto_tag_list) - len(pos_tag_list)])),
                         h=35, font=font_path, color=(255, 111, 136), text=neg_tag_list[i - len(auto_tag_list) - len(pos_tag_list)])
                 elif i == 0:
-                    search_button = Object.Auto_Tag_Button(
+                    search_button = Object.Tag_Button(
                         x=left_x, y=tag_y, w=15 * (len(neg_tag_list[i])),
                         h=35, font=font_path, color=(255, 111, 136), text=neg_tag_list[i])
 
