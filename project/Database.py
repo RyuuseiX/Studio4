@@ -20,10 +20,12 @@ class Excel_Database:
         df = pd.DataFrame(index=None, columns=head)
         df.to_excel(self.excel_path, sheet_name='Database', index=None)
 
-    def database_update(self, data_list):
+    def database_update(self, question, tag_list):
         book = openpyxl.load_workbook(self.excel_path)
         writer = pd.ExcelWriter(self.excel_path, engine='openpyxl')
         writer.book = book
+        data_list = [question]
+        data_list.extend(tag_list)
         df = pd.DataFrame([data_list], index=None, columns=None)
         writer.sheets = {ws.title: ws for ws in book.worksheets}
         for sheet_name in writer.sheets:
@@ -72,28 +74,10 @@ class Excel_Database:
         for i in range(random.randrange(2, 20)):
             data_list.append(random.choice(string.ascii_letters).lower())
         data_list = list(set(data_list))
-        self.database_update(data_list)
+        self.database_update(data_list[0], data_list[1:])
         # print("PASS !!!")
         self.database_query([], [])
 
-
-
-# if os == 'W':
-#     excel_path = './Tag_Database.xlsx'
-# elif os == 'M':
-#     excel_path = '/Users/Peace/Desktop/Studio4-main/project/Tag_Database.xlsx'
-
-
-
-# '''Update'''
-# data_list = []
-# for i in range(random.randrange(2, 20)):
-#     data_list.append(random.choice(string.ascii_letters).lower())
-# data_list = list(set(data_list))
-# # database_update(excel_path, data_list)
-
-# '''Query'''
-# database_query(excel_path,['b'],['d'])
 
 
 if __name__ == '__main__':
