@@ -2,7 +2,6 @@ import pygame as pg
 import Ask_Question
 import Search_Question
 import Auto_Tag
-import Database
 import time
 import platform
 
@@ -33,7 +32,7 @@ class Text:
 
 
 class Rec(Text):
-    def __init__(self, x=0, y=0, w=0, h=0, font=None, color=(230, 230, 230), text=''):
+    def __init__(self, x=0, y=0, w=0, h=0, font=None, color=(230, 230, 230), text='', adjust=False):
         self.x = x  # Position X
         self.y = y  # Position Y
         self.w = w  # Width
@@ -41,12 +40,19 @@ class Rec(Text):
         self.font = font
         self.color = color  # light gray
         self.text = text
+        self.adjust = adjust
 
     def draw(self, surface, font_size=27, letter_color=(255, 255, 255), letter_back=None):
-        pg.draw.rect(surface, self.color, (self.x, self.y, self.w, self.h))
         if self.text != '':
             text_on_button = Text(surface, self.text, font_size, self.font, letter_color, letter_back)
+            if self.adjust is True:
+                self.w = text_on_button.text.get_rect().w + 4
+            pg.draw.rect(surface, self.color, (self.x, self.y, self.w, self.h))
             text_on_button.write_c(self.x + self.w / 2, self.y + self.h / 2)
+        else:
+            pg.draw.rect(surface, self.color, (self.x, self.y, self.w, self.h))
+
+
 
 
 class Tag_Button(Rec):
@@ -120,7 +126,9 @@ class Submit_Button(Rec):
         if event.type == pg.MOUSEBUTTONDOWN:
             if self.mouse_on():
                 if event.button == 1:
-                    self.database.test()
+                    tagged_q = self.input_box.ask_q.save()
+                    self.database.database_update(tagged_q['Question'], tagged_q['Tag'])
+
 
 
 class InputBox:
@@ -174,7 +182,8 @@ class InputBox:
             if self.active is True:
                 if event.key == pg.K_RETURN:
                     self.active = False
-                    self.color = self.inactive_color
+                    if self.mode in self.as_list:
+                        self.color = self.inactive_color
                 elif event.key == pg.K_BACKSPACE:
                     self.text = self.text[:-1]
                 elif (len(self.text) > 1) and (self.text[len(self.text) - 1] in tone_list) and (
@@ -205,6 +214,10 @@ class InputBox:
         if self.resizable:
             width = max(self.w, self.txt_surface.get_width() + 50)
             self.rect.w = width
+
+    def database_search(self, db):
+        tagged_q = self.search_q.save()
+        return db.database_query(tagged_q['Tag'], tagged_q['Neg_Tag'])
 
     def clear(self):
         self.text = ''

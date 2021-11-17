@@ -35,7 +35,7 @@ class Excel_Database:
 
     def database_query(self, positive_key_list, negative_key_list):
         df = pd.read_excel(self.excel_path, sheet_name='Database', keep_default_na=False, na_values=[""])
-        print(df)
+        # print(df)
 
         # Positive
         for i in range(len(df)):
@@ -63,11 +63,17 @@ class Excel_Database:
                 if not pd.isna(tag):
                     search_tag_list[i].append(tag)
 
+        # if df.empty or len(positive_key_list) == 0:
+        #     print("No Results Match")
+        # else:
+        #     # print(df)
+        #     print(search_question_list, '\t', search_tag_list)
+
         if df.empty or len(positive_key_list) == 0:
-            print("No Results Match")
+            return ['No Results Match'], [], []
         else:
-            print(df)
-            print(search_question_list, '\t', search_tag_list)
+            # print(df)
+            return search_question_list, search_tag_list, positive_key_list
 
     def test(self):
         data_list = []
@@ -82,7 +88,7 @@ class Excel_Database:
 
 if __name__ == '__main__':
 
-    password = input("Type the Authentication Code: ") #confirm
+    password = input("Type the Authentication Code: ")  # confirm
 
     if password == 'confirm' or password == 'C':
         '''Create (used ONCE when start a new file)'''

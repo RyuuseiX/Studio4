@@ -6,16 +6,19 @@ import time
 
 pg.init()
 
+# system
 os = platform.platform()[0].upper()
 win_x, win_y = 1280, 720
 screen = pg.display.set_mode((win_x, win_y))
 
+# font
 if os == 'W':
     font_path = './font/FC Minimal Regular.ttf'
 elif os == 'M':
     font_path = '/Users/Peace/Desktop/Studio4-main/project/font/FCMinimalRegular.otf'
 font_size = 30
 
+# color
 black = (0, 0, 0)
 white = (255, 255, 255)
 gray = (200, 200, 200)
@@ -23,11 +26,16 @@ light_gray = (230, 230, 230)
 green = (0, 200, 0)
 red = (200, 0, 0)
 
+# position
 left_x = 150
 top_y = 350
 right_x = win_x
 bottom_y = win_y
+ask_y = top_y + 250
+ask_y_start = ask_y
+search_y = top_y + 50
 
+# dimension
 box_height = 37
 box_width = 700
 tag_height = 35
@@ -36,7 +44,7 @@ space = 5
 image_space = 5
 button_size = (tag_height, tag_height)
 
-
+# image
 image_title = Object.Image(x=left_x-10, y=0, name='108')
 image_manual = Object.Image(x=left_x, y=top_y + 250, name='manual')
 image_manual.resize(button_size)
@@ -46,12 +54,13 @@ image_negative = Object.Image(x=left_x + button_size[0] + image_space, y=top_y +
 image_negative.resize(button_size)
 image_list = [image_title, image_manual, image_negative, image_positive]
 
-
+# question box
 search_box = Object.InputBox(x=left_x, y=top_y, w=box_width, h=box_height, mode='S',
                              input_font=font_path, font_size=font_size, resizable=False)
 ask_box = Object.InputBox(x=left_x, y=top_y+200, w=box_width, h=box_height, mode='A',
                           input_font=font_path, font_size=font_size, resizable=False)
 
+# tag box
 manual_box = Object.InputBox(x=image_manual.x, y=image_manual.y, w=tag_width, h=tag_height, mode='M',
                              input_font=font_path, font_size=font_size, resizable=True)
 positive_box = Object.InputBox(x=image_positive.x, y=image_positive.y, w=tag_width, h=tag_height, mode='P',
@@ -63,22 +72,26 @@ tag_box = [manual_box, positive_box, negative_box]
 for box in tag_box:
     box.rect.w = 0
 
+# clear button
 clear_search = Object.Clear_Button(x=left_x + box_width, y=top_y, w=100, h=box_height, input_box=search_box, text='Clear')
 clear_ask = Object.Clear_Button(x=left_x + box_width, y=top_y+200, w=100, h=box_height, input_box=ask_box, text='Clear')
 clear_list = [clear_search, clear_ask]
 
+# database
 excel_database = Database.Excel_Database() 
-write_question = Object.Submit_Button(x=left_x + box_width + 100, y=top_y + 200, w=100, h=box_height, input_box=ask_box, db=excel_database, text='Submit')
+submit_button = Object.Submit_Button(x=left_x + box_width + 100, y=top_y + 200, w=100, h=box_height, input_box=ask_box, db=excel_database, text='Submit')
 
+# text
 search_txt = Object.Text(screen, 'Find Question', input_font=font_path, font_size=font_size)
 ask_txt = Object.Text(screen, 'New Question', input_font=font_path, font_size=font_size)
 
+# disable tag
 disable_search = []
 new_disable_search = []
-
 disable_ask = []
 new_disable_ask = []
 
+# scroll bar
 vertical_scrollbar = Object.Vertical_ScrollBar(win_y)
 horizontal_scrollbar = Object.Horizontal_ScrollBar(win_x)
 expand_horizontal = False
@@ -88,7 +101,7 @@ run = True
 while run:
 
     left_x = 150 + horizontal_scrollbar.x_axis
-    top_y  = 350 + vertical_scrollbar.y_axis
+    top_y = 350 + vertical_scrollbar.y_axis
 
     screen.fill(white)
 
@@ -105,9 +118,9 @@ while run:
     image_title.y = top_y - 350
     image_positive.y = top_y + 50
     image_negative.y = top_y + 50
-    image_manual.y   = top_y + 250
-    write_question.x = left_x + box_width + 100
-    write_question.y = top_y + 200
+    image_manual.y = top_y + 250
+    submit_button.x = left_x + box_width + 100
+    submit_button.y = top_y + 200
 
     # input_box
     for box in input_box:
@@ -118,20 +131,21 @@ while run:
         box.update()
         box.draw(screen)
 
+        # ask box
         if box.mode == 'A':
-            auto_tag_list = box.ask_q.auto_tag
             box.ask_q.disable_tag = disable_ask
-            tag_y = top_y + 250
             ask_button_list = []
 
+            # auto tag
+            auto_tag_list = box.ask_q.auto_tag
             for i in range(len(auto_tag_list)):
                 if i > 0:
                     ask_button = Object.Tag_Button(
-                        x=ask_button_list[i - 1].x + ask_button_list[i - 1].w + space, y=tag_y, w=15 * (len(auto_tag_list[i])),
+                        x=ask_button_list[i - 1].x + ask_button_list[i - 1].w + space, y=ask_y, w=15 * (len(auto_tag_list[i])),
                         h=tag_height, font=font_path, text=auto_tag_list[i])
                 elif i == 0:
                     ask_button = Object.Tag_Button(
-                        x=left_x, y=tag_y, w=15 * (len(auto_tag_list[i])),
+                        x=left_x, y=ask_y, w=15 * (len(auto_tag_list[i])),
                         h=tag_height, font=font_path, text=auto_tag_list[i])
 
                 if ask_button.text in disable_ask:
@@ -144,6 +158,7 @@ while run:
                 if i == len(auto_tag_list) - 1:
                     image_manual.x = ask_button_list[i].x + ask_button_list[i].w + space
 
+            # manual tag
             manual_tag_list = box.ask_q.manual_tag
             for tag in manual_tag_list:
                 if tag in disable_ask:
@@ -151,11 +166,11 @@ while run:
             for i in range(len(auto_tag_list), len(auto_tag_list) + len(manual_tag_list)):
                 if i > 0:
                     ask_button = Object.Tag_Button(
-                        x=ask_button_list[i - 1].x + ask_button_list[i - 1].w + space, y=tag_y, w=15 * (len(manual_tag_list[i-len(auto_tag_list)])),
+                        x=ask_button_list[i - 1].x + ask_button_list[i - 1].w + space, y=ask_y, w=15 * (len(manual_tag_list[i-len(auto_tag_list)])),
                         h=tag_height, font=font_path, text=manual_tag_list[i-len(auto_tag_list)])
                 elif i == 0:
                     ask_button = Object.Tag_Button(
-                        x=left_x, y=tag_y, w=15 * (len(manual_tag_list[i])),
+                        x=left_x, y=ask_y, w=15 * (len(manual_tag_list[i])),
                         h=tag_height, font=font_path, text=manual_tag_list[i])
 
                 ask_button_list.append(ask_button)
@@ -172,21 +187,23 @@ while run:
                 ask_button_wide += a.w
                 ask_button_wide += space
 
+
+        # search box
         elif box.mode == 'S':
-            auto_tag_list = box.search_q.auto_tag
             box.search_q.disable_tag = disable_search
-            tag_y = top_y + 50
             search_button_list = []
 
+            # auto tag
+            auto_tag_list = box.search_q.auto_tag
             for i in range(len(auto_tag_list)):
                 if i > 0:
                     search_button = Object.Tag_Button(
-                        x=search_button_list[i - 1].x + search_button_list[i - 1].w + space, y=tag_y, w=15 * (len(auto_tag_list[i])),
-                        h=35, font=font_path, text=auto_tag_list[i])
+                        x=search_button_list[i - 1].x + search_button_list[i - 1].w + space, y=search_y, w=15 * (len(auto_tag_list[i])),
+                        h=tag_height, font=font_path, text=auto_tag_list[i])
                 elif i == 0:
                     search_button = Object.Tag_Button(
-                        x=left_x, y=tag_y, w=15 * (len(auto_tag_list[i])),
-                        h=35, font=font_path, text=auto_tag_list[i])
+                        x=left_x, y=search_y, w=15 * (len(auto_tag_list[i])),
+                        h=tag_height, font=font_path, text=auto_tag_list[i])
 
                 if search_button.text in disable_search:
                     search_button.status = False
@@ -198,6 +215,7 @@ while run:
                 if i == len(auto_tag_list) - 1:
                     image_positive.x = search_button_list[i].x + search_button_list[i].w + space
 
+            # positive tag
             pos_tag_list = box.search_q.pos_tag
             for tag in pos_tag_list:
                 if tag in disable_search:
@@ -205,12 +223,12 @@ while run:
             for i in range(len(auto_tag_list), len(auto_tag_list) + len(pos_tag_list)):
                 if i > 0:
                     search_button = Object.Tag_Button(
-                        x=search_button_list[i - 1].x + search_button_list[i - 1].w + space, y=tag_y, w=15 * (len(pos_tag_list[i - len(auto_tag_list)])),
-                        h=35, font=font_path, text=pos_tag_list[i - len(auto_tag_list)])
+                        x=search_button_list[i - 1].x + search_button_list[i - 1].w + space, y=search_y, w=15 * (len(pos_tag_list[i - len(auto_tag_list)])),
+                        h=tag_height, font=font_path, text=pos_tag_list[i - len(auto_tag_list)])
                 elif i == 0:
                     search_button = Object.Tag_Button(
-                        x=left_x, y=tag_y, w=15 * (len(pos_tag_list[i])),
-                        h=35, font=font_path, text=pos_tag_list[i])
+                        x=left_x, y=search_y, w=15 * (len(pos_tag_list[i])),
+                        h=tag_height, font=font_path, text=pos_tag_list[i])
 
                 search_button_list.append(search_button)
                 search_button.draw(screen)
@@ -218,6 +236,7 @@ while run:
                 if i == len(auto_tag_list) + len(pos_tag_list) - 1:
                     image_positive.x = search_button_list[i].x + search_button_list[i].w + space
 
+            # negative tag
             neg_tag_list = box.search_q.neg_tag
             for tag in neg_tag_list:
                 if tag in disable_search:
@@ -225,12 +244,12 @@ while run:
             for i in range(len(auto_tag_list) + len(pos_tag_list), len(auto_tag_list) + len(pos_tag_list) + len(neg_tag_list)):
                 if i > 0:
                     search_button = Object.Tag_Button(
-                        x=search_button_list[i - 1].x + search_button_list[i - 1].w + space, y=tag_y, w=15 * (len(neg_tag_list[i - len(auto_tag_list) - len(pos_tag_list)])),
-                        h=35, font=font_path, color=(255, 111, 136), text=neg_tag_list[i - len(auto_tag_list) - len(pos_tag_list)])
+                        x=search_button_list[i - 1].x + search_button_list[i - 1].w + space, y=search_y, w=15 * (len(neg_tag_list[i - len(auto_tag_list) - len(pos_tag_list)])),
+                        h=tag_height, font=font_path, color=(255, 111, 136), text=neg_tag_list[i - len(auto_tag_list) - len(pos_tag_list)])
                 elif i == 0:
                     search_button = Object.Tag_Button(
-                        x=left_x, y=tag_y, w=15 * (len(neg_tag_list[i])),
-                        h=35, font=font_path, color=(255, 111, 136), text=neg_tag_list[i])
+                        x=left_x, y=search_y, w=15 * (len(neg_tag_list[i])),
+                        h=tag_height, font=font_path, color=(255, 111, 136), text=neg_tag_list[i])
 
                 search_button_list.append(search_button)
                 search_button.draw(screen)
@@ -246,7 +265,7 @@ while run:
                 search_button_wide += s.w
                 search_button_wide += space
             
-
+    # expand vertical
     if expand_vertical:
         if time.time() - vertical_scrollbar.scrollTimeStamp >= 0.05 and vertical_scrollbar.scroll == 1:
             vertical_scrollbar.scroll = 0
@@ -258,7 +277,7 @@ while run:
         clear_ask.y = top_y+200
         clear.draw(screen)
 
-    write_question.draw(screen)
+    submit_button.draw(screen)
 
     for img in image_list:
         if 'fill' in img.name:
@@ -303,6 +322,41 @@ while run:
                     search_box.search_q.add_neg_tag(negative_box.text)
                     negative_box.clear()
 
+    result_question, result_tag, pos_key = search_box.database_search(submit_button.database)
+    result_y = top_y + 50 + space + tag_height
+    for i in range(len(result_question)):
+        result_list = []
+        result_text = Object.Text(surface=screen, input_text=result_question[i], font_size=27, input_font=font_path)
+        result_text.write_tl(left_x, result_y + 2)
+        # tag_list = []
+        if result_question[i] == 'No Results Match':
+            break
+        for j in range(0, len(result_tag[i])):
+            tag = result_tag[i][j]
+            if j == 0:
+                if tag in pos_key:
+                    result = Object.Rec(x=left_x + result_text.text.get_rect().w + space, y=result_y,
+                                        h=tag_height, font=font_path, color=(112, 173, 71), text=tag, adjust=True)
+
+                elif tag not in pos_key:
+                    result = Object.Rec(x=left_x + result_text.text.get_rect().w + space, y=result_y,
+                                        h=tag_height, font=font_path, color=light_gray, text=tag, adjust=True)
+
+            elif j > 0:
+                if tag in pos_key:
+                    result = Object.Rec(x=result_list[j - 1].x + result_list[j - 1].w + space, y=result_y,
+                                        h=tag_height, font=font_path, color=(112, 173, 71), text=tag, adjust=True)
+                elif tag not in pos_key:
+                    result = Object.Rec(x=result_list[j - 1].x + result_list[j - 1].w + space, y=result_y,
+                                        h=tag_height, font=font_path, color=light_gray, text=tag, adjust=True)
+
+            result_list.append(result)
+            result.draw(screen)
+
+        result_y += tag_height + space
+
+    ask_y = max(ask_y_start, result_y + tag_height + space)
+
     for event in pg.event.get():
         for box in input_box:
             box.handle_event(event)
@@ -318,7 +372,7 @@ while run:
         for clear in clear_list:
             clear.handle_event(event)
 
-        write_question.handle_event(event)
+        submit_button.handle_event(event)
 
         for img in image_list:
             img.handle_event(event)
@@ -353,8 +407,10 @@ while run:
         box.update()
         box.draw(screen)
 
+
+
     # right_x = max( win_x, max(search_button_wide, ask_button_wide)  )
-    right_x  = win_x + 543
+    right_x = win_x + 543
     bottom_y = win_y + 543
 
     vertical_scrollbar.update()

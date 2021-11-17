@@ -1,3 +1,2 @@
-import platform as p
-
-print(p.platform())
+for i in range(0):
+    print(i)
