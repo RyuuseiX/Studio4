@@ -97,16 +97,19 @@ horizontal_scrollbar = Object.Horizontal_ScrollBar(win_x)
 expand_horizontal = False
 expand_vertical = False
 
+middle_y = 550 + vertical_scrollbar.y_axis
+
 run = True
 while run:
 
     left_x = 150 + horizontal_scrollbar.x_axis
     top_y = 350 + vertical_scrollbar.y_axis
 
+    search_y = top_y + 50
+
     screen.fill(white)
 
     search_txt.write_tl(left_x, top_y - 32)
-    ask_txt.write_tl(left_x, top_y + 200 - 32)
 
     disable_search = new_disable_search
     new_disable_search = []
@@ -118,15 +121,19 @@ while run:
     image_title.y = top_y - 350
     image_positive.y = top_y + 50
     image_negative.y = top_y + 50
-    image_manual.y = top_y + 250
+
+    # middle_y = 550 + vertical_scrollbar.y_axis
+    ask_txt.write_tl(left_x, middle_y - 32)
     submit_button.x = left_x + box_width + 100
-    submit_button.y = top_y + 200
+    submit_button.y = middle_y 
+    ask_y = middle_y + 50       #max(ask_y_start, result_y + tag_height + space) + top_y - 350
+    image_manual.y = middle_y + 50
 
     # input_box
     for box in input_box:
         box.rect.x = left_x
         search_box.rect.y = top_y
-        ask_box.rect.y = top_y + 200
+        ask_box.rect.y    = middle_y
         
         box.update()
         box.draw(screen)
@@ -274,7 +281,7 @@ while run:
     for clear in clear_list:
         clear.x = left_x + box_width
         clear_search.y = top_y
-        clear_ask.y = top_y+200
+        clear_ask.y = middle_y
         clear.draw(screen)
 
     submit_button.draw(screen)
@@ -322,6 +329,7 @@ while run:
                     search_box.search_q.add_neg_tag(negative_box.text)
                     negative_box.clear()
 
+
     result_question, result_tag, pos_key = search_box.database_search(submit_button.database)
     result_y = top_y + 50 + space + tag_height
     for i in range(len(result_question)):
@@ -355,7 +363,8 @@ while run:
 
         result_y += tag_height + space
 
-    ask_y = max(ask_y_start, result_y + tag_height + space)
+    # print(result_question)
+    middle_y = 575 + vertical_scrollbar.y_axis + max(0, len(result_question)-2) * 40
 
     for event in pg.event.get():
         for box in input_box:
@@ -409,9 +418,10 @@ while run:
 
 
 
-    # right_x = max( win_x, max(search_button_wide, ask_button_wide)  )
-    right_x = win_x + 543
-    bottom_y = win_y + 543
+    right_x = max( win_x, max(search_button_wide, ask_button_wide)  )
+    bottom_y = max( win_y, 600 + max(0, len(result_question)-2)*40 + 80 + 30)
+    # right_x = win_x + 543
+    # bottom_y = win_y + 543
 
     vertical_scrollbar.update()
     horizontal_scrollbar.update()

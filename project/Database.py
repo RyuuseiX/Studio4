@@ -68,8 +68,10 @@ class Excel_Database:
         # else:
         #     # print(df)
         #     print(search_question_list, '\t', search_tag_list)
+        if len(positive_key_list) == 0:
+            return [],[],[]
 
-        if df.empty or len(positive_key_list) == 0:
+        if df.empty:
             return ['No Results Match'], [], []
         else:
             # print(df)
