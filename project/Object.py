@@ -101,10 +101,13 @@ class Clear_Button(Rec):
                     if self.input_box.mode == 'A':
                         self.input_box.ask_q.add_text(self.input_box.text)
                         Auto_Tag.auto_tag(self.input_box.ask_q)
+                        self.input_box.ask_q.del_manual_tag('!CLEAR_ALL!')
 
                     elif self.input_box.mode == 'S':
                         self.input_box.search_q.add_text(self.input_box.text)
                         Auto_Tag.auto_tag(self.input_box.search_q)
+                        self.input_box.search_q.del_pos_tag('!CLEAR_ALL!')
+                        self.input_box.search_q.del_neg_tag('!CLEAR_ALL!')
 
 
 class Submit_Button(Rec):
@@ -128,6 +131,10 @@ class Submit_Button(Rec):
                 if event.button == 1:
                     tagged_q = self.input_box.ask_q.save()
                     self.database.database_update(tagged_q['Question'], tagged_q['Tag'])
+                    self.input_box.clear()
+                    self.input_box.ask_q.add_text(self.input_box.text)
+                    Auto_Tag.auto_tag(self.input_box.ask_q)
+                    self.input_box.ask_q.del_manual_tag('!CLEAR_ALL!')
 
 
 
