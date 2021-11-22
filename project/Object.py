@@ -46,7 +46,7 @@ class Rec(Text):
         if self.text != '':
             text_on_button = Text(surface, self.text, font_size, self.font, letter_color, letter_back)
             if self.adjust is True:
-                self.w = text_on_button.text.get_rect().w + 4
+                self.w = text_on_button.text.get_rect().w + 10
             pg.draw.rect(surface, self.color, (self.x, self.y, self.w, self.h))
             text_on_button.write_c(self.x + self.w / 2, self.y + self.h / 2)
         else:
@@ -59,7 +59,7 @@ class Tag_Button(Rec):
     def __init__(self, x, y, w, h, font=None, color=(112, 173, 71), text=''):
         self.font = font
         self.status = True
-        Rec.__init__(self, x, y, w, h, font, color, text)
+        Rec.__init__(self, x, y, w, h, font, color, text, adjust=True)
 
     def mouse_on(self):
         (pos_x, pos_y) = pg.mouse.get_pos()
