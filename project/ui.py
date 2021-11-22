@@ -416,6 +416,22 @@ while run:
         box.update()
         box.draw(screen)
 
+        if box.active is False:
+            if box.mode == 'M':
+                if box.text != '':
+                    ask_box.ask_q.add_manual_tag(box.text)
+                    box.clear()
+                    image_manual.unfill()
+            elif box.mode == 'P':
+                if box.text != '':
+                    search_box.search_q.add_pos_tag(box.text)
+                    box.clear()
+                    image_positive.unfill()
+            elif box.mode == 'N':
+                if box.text != '':
+                    search_box.search_q.add_neg_tag(box.text)
+                    box.clear()
+                    image_negative.unfill()
 
 
     right_x = max( win_x, max(search_button_wide, ask_button_wide)  )

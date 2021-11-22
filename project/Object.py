@@ -276,21 +276,27 @@ class Image:
             is_mouse_on = False
         return is_mouse_on
 
+    def fill(self):
+        if 'fill' not in self.name:
+            self.name += ' fill'
+            self.img = self.load()
+            self.resize((self.w, self.h))
+
+    def unfill(self):
+        if 'fill' in self.name:
+            self.name = self.name.replace(' fill', '')
+            self.img = self.load()
+            self.resize((self.w, self.h))
+
     def handle_event(self, event):
         if event.type == pg.MOUSEBUTTONDOWN:
             if event.button == 1:
                 if 'positive' in self.name or 'negative' in self.name or 'manual' in self.name:
                     if self.mouse_on():
-                        if 'fill' not in self.name:
-                            self.name += ' fill'
-                            self.img = self.load()
-                            self.resize((self.w, self.h))
+                        self.fill()
 
                     elif not self.mouse_on():
-                        if 'fill' in self.name:
-                            self.name = self.name.replace(' fill', '')
-                            self.img = self.load()
-                            self.resize((self.w, self.h))
+                        self.unfill()
 
 
 class Vertical_ScrollBar(object):
