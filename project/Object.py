@@ -31,6 +31,36 @@ class Text:
         self.surface.blit(self.text, text_rect)
 
 
+class RoundRec:
+    def __init__(self, x=0, y=0, w=0, h=0, r=0, t=0, color=(0, 0, 0)):
+        self.x = x   # Position X
+        self.y = y   # Position Y
+        self.w = w   # Width
+        self.h = h   # Height
+        self.round = r      # Roundness
+        self.r = int(r*h/2) # Radius
+        self.t = t   # Thinkness
+        self.color = color
+
+    def draw(self, surface):
+        pg.draw.rect  (surface, self.color, (self.x+self.r,        self.y,                self.w-2*self.r, self.h))
+        pg.draw.rect  (surface, self.color, (self.x,               self.y+self.r,         self.w,          self.h-2*self.r))
+        pg.draw.circle(surface, self.color, (self.x+self.r,        self.y+self.r),        self.r)
+        pg.draw.circle(surface, self.color, (self.x+self.w-self.r, self.y+self.r),        self.r)
+        pg.draw.circle(surface, self.color, (self.x+self.r,        self.y+self.h-self.r), self.r)
+        pg.draw.circle(surface, self.color, (self.x+self.w-self.r, self.y+self.h-self.r), self.r)
+
+        if self.t != 0:
+            x2 = self.x + self.t
+            y2 = self.y + self.t
+            w2 = self.w - self.t*2
+            h2 = self.h - self.t*2
+
+            FillRoundRec = RoundRec(x2, y2, w2, h2, self.round, 0, (255,255,255))
+            FillRoundRec.draw(surface)
+
+
+
 class Rec(Text):
     def __init__(self, x=0, y=0, w=0, h=0, font=None, color=(230, 230, 230), text='', adjust=False):
         self.x = x  # Position X
@@ -47,11 +77,12 @@ class Rec(Text):
             text_on_button = Text(surface, self.text, font_size, self.font, letter_color, letter_back)
             if self.adjust is True:
                 self.w = text_on_button.text.get_rect().w + 10
-            pg.draw.rect(surface, self.color, (self.x, self.y, self.w, self.h))
+            NewRoundRec = RoundRec(self.x, self.y, self.w, self.h, 0.4, 0, self.color)
+            NewRoundRec.draw(surface)
+            # pg.draw.rect(surface, self.color, (self.x, self.y, self.w, self.h))
             text_on_button.write_c(self.x + self.w / 2, self.y + self.h / 2)
         else:
             pg.draw.rect(surface, self.color, (self.x, self.y, self.w, self.h))
-
 
 
 
