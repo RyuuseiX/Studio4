@@ -20,7 +20,7 @@ tag = []
 
 
 
-txt = 'การเมืองการปกครอง'
+txt = 'แม่กรนดังมาก'
 aq = Ask_Question.Ask_Question()
 aq.add_text(txt)
 # sq = Search_Question.Search_Question()
