@@ -18,7 +18,7 @@ class Search_Question:
         self.tagged_question['Tag'].extend(self.pos_tag)
 
         for tag in self.disable_tag:
-            if tag in self.tagged_question:
+            if tag in self.tagged_question['Tag']:
                 self.tagged_question['Tag'].remove(tag)
 
         return self.tagged_question
