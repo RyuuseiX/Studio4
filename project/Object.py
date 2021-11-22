@@ -37,8 +37,8 @@ class RoundRec:
         self.y = y   # Position Y
         self.w = w   # Width
         self.h = h   # Height
-        self.round = r      # Roundness
-        self.r = int(r*h/2) # Radius
+        self.round = r       # Roundness
+        self.r = int(r*h/2)  # Radius
         self.t = t   # Thinkness
         self.color = color
 

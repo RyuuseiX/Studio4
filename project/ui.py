@@ -84,6 +84,8 @@ submit_button = Object.Submit_Button(x=left_x + box_width + 100, y=top_y + 200, 
 # text
 search_txt = Object.Text(screen, 'Find Question', input_font=font_path, font_size=font_size)
 ask_txt = Object.Text(screen, 'New Question', input_font=font_path, font_size=font_size)
+in_search_txt = Object.Text(screen, 'พิมพ์ปัญหาที่ต้องการค้นหา', input_font=font_path, font_size=font_size, letter_color=pg.Color('lightskyblue3'))
+in_ask_txt = Object.Text(screen, 'พิมพ์ปัญหาที่ต้องการเพิ่ม', input_font=font_path, font_size=font_size, letter_color=pg.Color('lightskyblue3'))
 
 # disable tag
 disable_search = []
@@ -461,6 +463,11 @@ while run:
 
     if expand_horizontal:
         horizontal_scrollbar.draw(screen)
+
+    if search_box.active is False and search_box.text == '':
+        in_search_txt.write_tl(left_x + 10, top_y + 5)
+    if ask_box.active is False and ask_box.text == '':
+        in_ask_txt.write_tl(left_x + 10, ask_y - 45)
 
     pg.time.delay(1)
     pg.display.update()
