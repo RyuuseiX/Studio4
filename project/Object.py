@@ -111,7 +111,7 @@ class Tag_Button(Rec):
 
 
 class Clear_Button(Rec):
-    def __init__(self, x, y, w, h, input_box, font=None, color=(0, 200, 200), text=''):
+    def __init__(self, x, y, w, h, input_box, font=None, color=(247, 28, 27), text=''):
         self.font = font
         self.input_box = input_box
         Rec.__init__(self, x, y, w, h, font, color, text)
@@ -142,7 +142,7 @@ class Clear_Button(Rec):
 
 
 class Submit_Button(Rec):
-    def __init__(self, x, y, w, h, input_box, db, font=None, color=(200, 0, 0), text=''):
+    def __init__(self, x, y, w, h, input_box, db, font=None, color=(27, 116, 247), text=''):
         self.font = font
         self.input_box = input_box
         Rec.__init__(self, x, y, w, h, font, color, text)
@@ -346,8 +346,8 @@ class Vertical_ScrollBar(object):
             self.bar_up_image = pg.image.load('./image/up.png').convert()
             self.bar_down_image = pg.image.load('./image/down.png').convert()
         elif os == 'M':
-            self.bar_up_image = pg.image.load('/Users/Peace/Desktop/scrollbar-master/up.png').convert()
-            self.bar_down_image = pg.image.load('/Users/Peace/Desktop/scrollbar-master/down.png').convert()
+            self.bar_up_image = pg.image.load('/Users/Peace/Desktop/Studio4-main/project/image/up.png').convert()
+            self.bar_down_image = pg.image.load('/Users/Peace/Desktop/Studio4-main/project/image/down.png').convert()
 
 
         self.on_bar = False
@@ -449,8 +449,8 @@ class Horizontal_ScrollBar(object):
             self.bar_right_image = pg.image.load('./image/right.png').convert()
 
         elif os == 'M':
-            self.bar_left_image = pg.image.load('/Users/Peace/Desktop/scrollbar-master/left.png').convert()
-            self.bar_right_image = pg.image.load('/Users/Peace/Desktop/scrollbar-master/right.png').convert()
+            self.bar_left_image = pg.image.load('/Users/Peace/Desktop/Studio4-main/project/image/left.png').convert()
+            self.bar_right_image = pg.image.load('/Users/Peace/Desktop/Studio4-main/project/image/right.png').convert()
 
         self.on_bar = False
         self.mouse_diff = 0
